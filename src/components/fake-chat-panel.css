@@ -1,0 +1,95 @@
+/* ============================================================
+   Fake Chat Panel — Styled to match Inkstone's AI sidebar
+   ============================================================ */
+
+.fake-chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* --- Header --- */
+.fake-chat__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-toolbar);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.fake-chat__title {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.fake-chat__status {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--diff-insert-text);
+}
+
+/* --- Messages --- */
+.fake-chat__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.fake-chat__message {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 90%;
+  word-wrap: break-word;
+}
+
+.fake-chat__message--user {
+  align-self: flex-end;
+  background: var(--user-message-bg);
+  color: var(--text-primary);
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+.fake-chat__message--ai {
+  align-self: flex-start;
+  background: var(--ai-message-bg);
+  color: var(--text-primary);
+  border-bottom-left-radius: var(--radius-sm);
+}
+
+/* --- Input (decorative) --- */
+.fake-chat__input-area {
+  padding: var(--space-sm) var(--space-md);
+  border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.fake-chat__input {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-input);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 13px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 767px) {
+  .fake-chat__messages {
+    padding: var(--space-sm);
+  }
+
+  .fake-chat__message {
+    font-size: 13px;
+  }
+}

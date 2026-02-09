@@ -1,0 +1,73 @@
+/* ============================================================
+   Step Indicator Tabs
+   ============================================================ */
+
+.step-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-toolbar);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.step-indicator__tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-md);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+  white-space: nowrap;
+}
+
+.step-indicator__tab:hover {
+  color: var(--text-secondary);
+  background: var(--bg-hover);
+}
+
+.step-indicator__tab--active {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+  border-color: var(--border-primary);
+}
+
+.step-indicator__tab--completed .step-indicator__number {
+  color: var(--diff-insert-text);
+}
+
+.step-indicator__number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 50%;
+  background: var(--bg-card);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.step-indicator__tab--active .step-indicator__number {
+  background: var(--accent);
+  color: #fff;
+}
+
+.step-indicator__label {
+  /* Hidden on very small screens */
+}
+
+@media (max-width: 400px) {
+  .step-indicator__label {
+    display: none;
+  }
+}
