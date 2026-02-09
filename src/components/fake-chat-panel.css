@@ -1,11 +1,12 @@
 /* ============================================================
-   Fake Chat Panel — Styled to match real Inkstone AI sidebar
+   Fake Chat Panel — Matches real Inkstone AI assistant
    ============================================================ */
 
 .fake-chat {
   display: flex;
   flex-direction: column;
   height: 100%;
+  background: var(--bg-chat);
 }
 
 /* --- Header with fuel credits --- */
@@ -13,8 +14,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
-  background: var(--bg-toolbar-tabs);
+  padding: 8px 12px;
   border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
 }
@@ -24,23 +24,86 @@
   align-items: center;
 }
 
-.fake-chat__fuel {
+.fake-chat__fuel-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: transparent;
+  border: none;
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
+  color: var(--text-primary);
+  cursor: default;
+}
+
+.fake-chat__fuel-icon {
   color: #4ade80;
 }
 
 .fake-chat__header-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 4px;
 }
 
-.fake-chat__header-icon {
-  font-size: 14px;
+.fake-chat__header-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
   color: var(--text-muted);
   cursor: default;
+}
+
+/* --- Thread Tabs --- */
+.fake-chat__tabs {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  height: 36px;
+}
+
+.fake-chat__tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: default;
+  white-space: nowrap;
+}
+
+.fake-chat__tab--active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent);
+  background: var(--accent-muted);
+}
+
+.fake-chat__tab-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 /* --- Thread Messages --- */
@@ -53,7 +116,7 @@
   gap: 12px;
 }
 
-/* User message — blue bubble matching real app */
+/* User message — blue bubble */
 .fake-chat__user-msg {
   font-family: var(--font-sans);
   font-size: 14px;
@@ -68,7 +131,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* Action cards — thread-style with dot + name + output */
+/* Action cards */
 .fake-chat__action-card {
   background: var(--chat-action-bg, var(--bg-card));
   border: 1px solid var(--chat-action-border, var(--border-primary));
@@ -100,13 +163,6 @@
   font-size: 13px;
   font-weight: 500;
   color: var(--text-primary);
-}
-
-.fake-chat__action-nav {
-  margin-left: auto;
-  font-family: var(--font-sans);
-  font-size: 12px;
-  color: var(--text-muted);
 }
 
 .fake-chat__action-output {
@@ -146,7 +202,7 @@
 
 .fake-chat__input {
   flex: 1;
-  padding: 8px 12px;
+  padding: 10px 12px;
   background: var(--bg-input);
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-md);
@@ -163,9 +219,8 @@
   height: 32px;
   background: var(--accent);
   color: #fff;
+  border: none;
   border-radius: 50%;
-  font-size: 16px;
-  font-weight: 700;
   cursor: default;
   flex-shrink: 0;
 }

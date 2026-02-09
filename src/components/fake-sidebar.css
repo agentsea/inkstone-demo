@@ -1,0 +1,220 @@
+/* ============================================================
+   Fake Sidebar — Matches Inkstone doc explorer panel
+   ============================================================ */
+
+.fake-sidebar {
+  background: var(--bg-chat);
+  border-right: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fake-sidebar--collapsed {
+  width: 44px;
+}
+
+.fake-sidebar--open {
+  width: 220px;
+}
+
+/* --- Collapsed State --- */
+.fake-sidebar__collapsed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
+  gap: 4px;
+}
+
+.fake-sidebar__logo {
+  padding: 8px 0 12px;
+}
+
+.fake-sidebar__logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 6px;
+}
+
+.fake-sidebar__icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: default;
+}
+
+.fake-sidebar__icon-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+}
+
+.fake-sidebar__expand-btn {
+  margin-top: auto;
+  opacity: 0.5;
+}
+
+/* --- Expanded State --- */
+.fake-sidebar__expanded {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.fake-sidebar__header {
+  padding: 10px 12px 8px;
+  flex-shrink: 0;
+}
+
+.fake-sidebar__header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.fake-sidebar__brand {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.fake-sidebar__collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: default;
+}
+
+.fake-sidebar__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fake-sidebar__action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  cursor: default;
+}
+
+.fake-sidebar__action-btn:hover {
+  background: var(--bg-hover);
+}
+
+/* --- Create Button --- */
+.fake-sidebar__create {
+  padding: 4px 12px 8px;
+}
+
+.fake-sidebar__create-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  background: var(--accent-muted);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: default;
+}
+
+/* --- Project Tree --- */
+.fake-sidebar__tree {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 8px;
+}
+
+.fake-sidebar__project-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 4px;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.fake-sidebar__project-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fake-sidebar__doc-list {
+  padding-left: 12px;
+}
+
+.fake-sidebar__doc {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: default;
+  transition: background var(--duration-fast) ease;
+}
+
+.fake-sidebar__doc:hover {
+  background: var(--bg-hover);
+}
+
+.fake-sidebar__doc--active {
+  background: var(--accent-muted);
+  color: var(--text-primary);
+}
+
+.fake-sidebar__doc-name {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- Responsive --- */
+@media (max-width: 767px) {
+  .fake-sidebar {
+    display: none;
+  }
+}

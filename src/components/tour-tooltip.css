@@ -1,0 +1,79 @@
+/* ============================================================
+   Tour Tooltip + Spotlight
+   ============================================================ */
+
+.tour-spotlight {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 90;
+  pointer-events: none;
+}
+
+.tour-tooltip {
+  z-index: 100;
+  max-width: 320px;
+  min-width: 200px;
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong, var(--border-primary));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg), 0 0 40px rgba(138, 180, 248, 0.08);
+  pointer-events: auto;
+}
+
+.tour-tooltip__text {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin: 0 0 12px;
+  white-space: pre-line;
+}
+
+.tour-tooltip__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tour-tooltip__cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 18px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--duration-fast) ease;
+  text-decoration: none;
+}
+
+.tour-tooltip__cta:hover {
+  background: var(--accent-hover);
+}
+
+.tour-tooltip__cta--link {
+  text-decoration: none;
+}
+
+.tour-tooltip__replay {
+  padding: 8px 14px;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+}
+
+.tour-tooltip__replay:hover {
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+}

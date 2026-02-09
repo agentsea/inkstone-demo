@@ -1,5 +1,5 @@
 /* ============================================================
-   Walkthrough Layout
+   Walkthrough Layout — sidebar + resizer + editor + resizer + chat
    ============================================================ */
 
 .walkthrough {
@@ -10,27 +10,37 @@
   background: var(--bg-primary);
   color: var(--text-primary);
   overflow: hidden;
+  position: relative;
 }
 
 .walkthrough__content {
   display: flex;
   flex: 1;
   min-height: 0;
-  gap: 1px;
-  background: var(--border-subtle);
+}
+
+.walkthrough__resizer {
+  width: 2px;
+  background: var(--border-primary);
+  flex-shrink: 0;
+  cursor: col-resize;
+  transition: background var(--duration-fast) ease;
+}
+
+.walkthrough__resizer:hover {
+  background: var(--accent);
+  width: 3px;
 }
 
 .walkthrough__editor {
   flex: 1;
   min-width: 0;
-  background: var(--bg-editor);
   overflow: hidden;
 }
 
 .walkthrough__chat {
-  width: 340px;
+  width: 300px;
   flex-shrink: 0;
-  background: var(--bg-chat);
   overflow: hidden;
 }
 
@@ -56,10 +66,14 @@
   border-color: var(--accent);
 }
 
-/* --- Responsive: stack on mobile --- */
+/* --- Responsive --- */
 @media (max-width: 767px) {
   .walkthrough__content {
     flex-direction: column;
+  }
+
+  .walkthrough__resizer {
+    display: none;
   }
 
   .walkthrough__chat {
@@ -70,6 +84,6 @@
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .walkthrough__chat {
-    width: 280px;
+    width: 260px;
   }
 }

@@ -27,36 +27,34 @@
 
 .fake-editor__doc-title {
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--text-primary);
 }
 
 .fake-editor__doc-subtitle {
   font-family: var(--font-sans);
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 
 .fake-editor__header-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
-.fake-editor__edited {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.fake-editor__claims-btn {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  color: var(--text-secondary);
+.fake-editor__header-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   padding: 4px 10px;
+  background: transparent;
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 12px;
   cursor: default;
 }
 
@@ -65,47 +63,53 @@
   display: flex;
   align-items: center;
   gap: 0;
-  padding: 0 16px;
-  background: var(--bg-toolbar-tabs);
-  border-bottom: 1px solid var(--border-subtle);
-  flex-shrink: 0;
-  overflow-x: auto;
-}
-
-.fake-editor__tab {
-  padding: 4px 6px;
-  font-family: var(--font-sans);
-  font-size: 8px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--toolbar-label, hsl(0, 0%, 50%));
-  cursor: default;
-  white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  transition: color var(--duration-fast) ease;
-}
-
-.fake-editor__tab--active {
-  color: var(--toolbar-tab-active, var(--text-primary));
-  border-bottom-color: var(--accent);
-}
-
-/* --- Toolbar Icons Row --- */
-.fake-editor__toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 16px;
+  padding: 0 12px;
   background: var(--bg-toolbar);
   border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
 }
 
-.fake-editor__toolbar-group {
+.fake-editor__tab {
+  padding: 6px 8px;
+  font-family: var(--font-sans);
+  font-size: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: hsl(0, 0%, 50%);
+  cursor: default;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+}
+
+.fake-editor__tab--active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent);
+}
+
+/* --- Toolbar Icons Row — sections separated by left border --- */
+.fake-editor__toolbar {
   display: flex;
   align-items: center;
-  gap: 2px;
+  padding: 4px 12px;
+  background: var(--bg-toolbar);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  overflow-x: auto;
+  gap: 0;
+}
+
+.fake-editor__toolbar-section {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 0 6px;
+  border-left: 1px solid var(--border-primary);
+}
+
+.fake-editor__toolbar-section:first-child {
+  border-left: none;
+  padding-left: 0;
 }
 
 .fake-editor__toolbar-icon {
@@ -118,11 +122,9 @@
   border: none;
   border-radius: var(--radius-sm);
   color: var(--toolbar-icon);
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 600;
   cursor: default;
-  transition: color var(--duration-fast) ease;
+  transition: all var(--duration-fast) ease;
+  flex-shrink: 0;
 }
 
 .fake-editor__toolbar-icon:hover {
@@ -131,8 +133,17 @@
 }
 
 .fake-editor__toolbar-icon--active {
-  background: var(--accent-soft, rgba(138, 180, 248, 0.18));
+  background: var(--accent-soft);
   color: var(--accent);
+}
+
+.fake-editor__toolbar-icon--text-color {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 700;
+  border-bottom: 3px solid var(--accent);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  height: 30px;
 }
 
 .fake-editor__toolbar-dropdown {
@@ -141,16 +152,10 @@
   color: var(--toolbar-icon);
   padding: 4px 8px;
   cursor: default;
+  white-space: nowrap;
 }
 
-.fake-editor__toolbar-divider {
-  width: 1px;
-  height: 18px;
-  background: var(--border-primary);
-  margin: 0 6px;
-}
-
-/* pulse animation for active toolbar items */
+/* pulse for active toolbar items */
 @keyframes pulse-btn {
   0%, 100% { box-shadow: 0 0 0 0 rgba(138, 180, 248, 0.4); }
   50% { box-shadow: 0 0 0 6px rgba(138, 180, 248, 0); }
@@ -161,6 +166,7 @@
   flex: 1;
   overflow-y: auto;
   padding: var(--space-2xl) var(--space-xl);
+  background: var(--bg-editor);
 }
 
 .fake-editor__page {
@@ -175,6 +181,11 @@
   line-height: 1.75;
   color: var(--text-primary);
   letter-spacing: -0.01em;
+}
+
+.fake-editor__paragraph--morphing {
+  box-shadow: 0 0 30px rgba(138, 180, 248, 0.06);
+  border-radius: var(--radius-md);
 }
 
 /* --- Blinking Cursor --- */
@@ -204,11 +215,24 @@
   }
 
   .fake-editor__toolbar-tabs {
-    padding: 0 8px;
+    padding: 0 6px;
   }
 
   .fake-editor__tab {
-    padding: 6px 10px;
-    font-size: 10px;
+    padding: 4px 5px;
+    font-size: 7px;
+  }
+
+  .fake-editor__toolbar {
+    padding: 2px 6px;
+  }
+
+  .fake-editor__toolbar-section {
+    padding: 0 3px;
+  }
+
+  .fake-editor__toolbar-icon {
+    width: 28px;
+    height: 28px;
   }
 }

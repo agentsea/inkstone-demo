@@ -1,12 +1,20 @@
 /**
  * FakeEditor — The "movie set" editor surface.
  *
- * Styled to closely match the real Inkstone app:
- * - Document header bar (title + "Edited just now" + "Claims")
- * - Two-row toolbar: tab row (AI | STYLE | FORMAT | ...) + icon row
- * - Document content area with proper typography
+ * Styled to closely match the real Inkstone app using exact Lucide icons,
+ * two-row toolbar, and document title bar.
  */
 
+import { forwardRef } from "react";
+import {
+  Glasses, BadgeCheck, BookOpen, Globe,
+  Bold, Italic, Underline, Strikethrough, Code, Link, Image, Table, Search,
+  AlignLeft, AlignCenter, AlignRight, AlignJustify,
+  List, ListOrdered, CheckSquare,
+  Undo, Redo,
+  Printer,
+  History,
+} from "lucide-react";
 import type { WalkthroughState } from "./walkthrough";
 import type { Act } from "./step-indicator";
 import type { ResearchPhase } from "./research-insert";
@@ -23,78 +31,130 @@ interface FakeEditorProps {
   onActComplete: (act: Act) => void;
 }
 
-export function FakeEditor({ state, researchPhase = "idle", onActComplete }: FakeEditorProps) {
-  const isMorphing = state === "act1";
+export const FakeEditor = forwardRef<HTMLDivElement, FakeEditorProps>(
+  function FakeEditor({ state, researchPhase = "idle", onActComplete }, ref) {
+    const isMorphing = state === "act1";
 
-  return (
-    <div className="fake-editor">
-      {/* Document header bar */}
-      <div className="fake-editor__header">
-        <div className="fake-editor__header-left">
-          <span className="fake-editor__doc-title">{DOC.title}</span>
-          <span className="fake-editor__doc-subtitle">{DOC.project}</span>
+    return (
+      <div className="fake-editor" ref={ref}>
+        {/* Document header bar */}
+        <div className="fake-editor__header">
+          <div className="fake-editor__header-left">
+            <span className="fake-editor__doc-title">{DOC.title}</span>
+            <span className="fake-editor__doc-subtitle">{DOC.project}</span>
+          </div>
+          <div className="fake-editor__header-right">
+            <button className="fake-editor__header-btn">
+              <History size={14} />
+              <span>Edited just now</span>
+            </button>
+            <button className="fake-editor__header-btn">
+              <BadgeCheck size={14} />
+              <span>Claims</span>
+            </button>
+          </div>
         </div>
-        <div className="fake-editor__header-right">
-          <span className="fake-editor__edited">Edited just now</span>
-          <span className="fake-editor__claims-btn">Claims</span>
+
+        {/* Toolbar row 1: section labels */}
+        <div className="fake-editor__toolbar-tabs">
+          <span className="fake-editor__tab fake-editor__tab--active">AI</span>
+          <span className="fake-editor__tab">STYLE</span>
+          <span className="fake-editor__tab">FORMAT</span>
+          <span className="fake-editor__tab">ALIGN</span>
+          <span className="fake-editor__tab">LISTS</span>
+          <span className="fake-editor__tab">HISTORY</span>
+          <span className="fake-editor__tab">PRINT</span>
         </div>
-      </div>
 
-      {/* Toolbar row 1: tabs */}
-      <div className="fake-editor__toolbar-tabs">
-        <span className="fake-editor__tab fake-editor__tab--active">AI</span>
-        <span className="fake-editor__tab">STYLE</span>
-        <span className="fake-editor__tab">FORMAT</span>
-        <span className="fake-editor__tab">ALIGN</span>
-        <span className="fake-editor__tab">LISTS</span>
-        <span className="fake-editor__tab">HISTORY</span>
-        <span className="fake-editor__tab">PRINT</span>
-      </div>
-
-      {/* Toolbar row 2: formatting icons — mirrors real toolbar layout */}
-      <div className="fake-editor__toolbar">
-        <div className="fake-editor__toolbar-group">
+        {/* Toolbar row 2: icons per section */}
+        <div className="fake-editor__toolbar">
           {/* AI section */}
-          <ToolbarIcon icon="glasses" label="Proofread" active={state === "act2"} />
-          <ToolbarIcon icon="check" label="Fact-check" />
-          <ToolbarIcon icon="book" label="Deep Research" />
-          <ToolbarIcon icon="globe" label="Web Search" />
-          <div className="fake-editor__toolbar-divider" />
-          {/* Style section */}
-          <span className="fake-editor__toolbar-dropdown">Heading 1</span>
-          <div className="fake-editor__toolbar-divider" />
-          {/* Format section */}
-          <ToolbarIcon icon="bold" />
-          <ToolbarIcon icon="italic" />
-          <ToolbarIcon icon="underline" />
-          <ToolbarIcon icon="strike" />
-          <ToolbarIcon icon="code" />
-          <ToolbarIcon icon="link" />
-          <div className="fake-editor__toolbar-divider" />
-          {/* Align section */}
-          <ToolbarIcon icon="alignL" />
-          <ToolbarIcon icon="alignC" />
-          <ToolbarIcon icon="alignR" />
-          <ToolbarIcon icon="justify" />
+          <div className="fake-editor__toolbar-section">
+            <button
+              className={`fake-editor__toolbar-icon ${state === "act2" ? "fake-editor__toolbar-icon--active" : ""}`}
+              data-tour-target="toolbar-proofread"
+              title="Proofread"
+            >
+              <Glasses size={16} />
+            </button>
+            <button className="fake-editor__toolbar-icon" title="Fact-check">
+              <BadgeCheck size={16} />
+            </button>
+            <button className="fake-editor__toolbar-icon" title="Deep Research">
+              <BookOpen size={16} />
+            </button>
+            <button className="fake-editor__toolbar-icon" title="Web Search">
+              <Globe size={16} />
+            </button>
+          </div>
+
+          {/* STYLE section */}
+          <div className="fake-editor__toolbar-section">
+            <span className="fake-editor__toolbar-dropdown">Heading 1</span>
+          </div>
+
+          {/* FORMAT section */}
+          <div className="fake-editor__toolbar-section">
+            <button className="fake-editor__toolbar-icon" title="Bold"><Bold size={16} /></button>
+            <button className="fake-editor__toolbar-icon" title="Italic"><Italic size={16} /></button>
+            <button className="fake-editor__toolbar-icon" title="Underline"><Underline size={16} /></button>
+            <button className="fake-editor__toolbar-icon" title="Strikethrough"><Strikethrough size={16} /></button>
+            <button className="fake-editor__toolbar-icon" title="Code"><Code size={16} /></button>
+            <button className="fake-editor__toolbar-icon" title="Link"><Link size={16} /></button>
+            <button className="fake-editor__toolbar-icon" title="Image"><Image size={16} /></button>
+            <button className="fake-editor__toolbar-icon" title="Table"><Table size={16} /></button>
+            <button className="fake-editor__toolbar-icon fake-editor__toolbar-icon--text-color" title="Text Color">
+              <span>A</span>
+            </button>
+            <button className="fake-editor__toolbar-icon" title="Find & Replace"><Search size={16} /></button>
+          </div>
+
+          {/* ALIGN section */}
+          <div className="fake-editor__toolbar-section">
+            <button className="fake-editor__toolbar-icon" title="Align Left"><AlignLeft size={16} /></button>
+            <button className="fake-editor__toolbar-icon" title="Align Center"><AlignCenter size={16} /></button>
+            <button className="fake-editor__toolbar-icon" title="Align Right"><AlignRight size={16} /></button>
+            <button className="fake-editor__toolbar-icon" title="Justify"><AlignJustify size={16} /></button>
+          </div>
+
+          {/* LISTS section */}
+          <div className="fake-editor__toolbar-section">
+            <button className="fake-editor__toolbar-icon" title="Bullet List"><List size={16} /></button>
+            <button className="fake-editor__toolbar-icon" title="Numbered List"><ListOrdered size={16} /></button>
+            <button className="fake-editor__toolbar-icon" title="Task List"><CheckSquare size={16} /></button>
+          </div>
+
+          {/* HISTORY section */}
+          <div className="fake-editor__toolbar-section">
+            <button className="fake-editor__toolbar-icon" title="Undo"><Undo size={16} /></button>
+            <button className="fake-editor__toolbar-icon" title="Redo"><Redo size={16} /></button>
+          </div>
+
+          {/* PRINT section */}
+          <div className="fake-editor__toolbar-section">
+            <button className="fake-editor__toolbar-icon" title="Print"><Printer size={16} /></button>
+          </div>
+        </div>
+
+        {/* Document content area */}
+        <div className="fake-editor__content" data-tour-target="editor-area">
+          <div className="fake-editor__page">
+            <p
+              className={`fake-editor__paragraph ${isMorphing ? "fake-editor__paragraph--morphing" : ""}`}
+              data-tour-target="editor-paragraph"
+            >
+              {renderEditorContent(state, onActComplete)}
+            </p>
+
+            <ResearchDocInsert phase={researchPhase} />
+
+            <span className="fake-editor__cursor" />
+          </div>
         </div>
       </div>
-
-      {/* Document content area */}
-      <div className="fake-editor__content">
-        <div className="fake-editor__page">
-          <p className={`fake-editor__paragraph ${isMorphing ? "fake-editor__paragraph--morphing" : ""}`}>
-            {renderEditorContent(state, onActComplete)}
-          </p>
-
-          {/* Research insert flows into doc during Act 3 */}
-          <ResearchDocInsert phase={researchPhase} />
-
-          <span className="fake-editor__cursor" />
-        </div>
-      </div>
-    </div>
-  );
-}
+    );
+  }
+);
 
 function renderEditorContent(
   state: WalkthroughState,
@@ -103,7 +163,6 @@ function renderEditorContent(
   switch (state) {
     case "idle":
       return ACT1.roughDraft;
-
     case "act1":
       return (
         <TextMorph
@@ -114,10 +173,8 @@ function renderEditorContent(
           onComplete={() => onActComplete("rewrite")}
         />
       );
-
     case "act1-complete":
       return ACT1.polishedDraft;
-
     case "act2":
       return (
         <DiffAnimation
@@ -125,42 +182,11 @@ function renderEditorContent(
           onComplete={() => onActComplete("proofread")}
         />
       );
-
     case "act2-complete":
     case "act3":
     case "act3-complete":
       return ACT2.cleanText;
-
     default:
       return "";
   }
-}
-
-function ToolbarIcon({ icon, label, active }: { icon: string; label?: string; active?: boolean }) {
-  const icons: Record<string, string> = {
-    bold: "B",
-    italic: "I",
-    underline: "U",
-    strike: "S",
-    code: "⟨⟩",
-    link: "🔗",
-    glasses: "👓",
-    check: "✓",
-    book: "📖",
-    globe: "🌐",
-    alignL: "≡",
-    alignC: "≡",
-    alignR: "≡",
-    justify: "≡",
-  };
-
-  return (
-    <button
-      className={`fake-editor__toolbar-icon ${active ? "fake-editor__toolbar-icon--active" : ""}`}
-      aria-label={label || icon}
-      title={label}
-    >
-      {icons[icon] || "•"}
-    </button>
-  );
 }

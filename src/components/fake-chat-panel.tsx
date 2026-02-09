@@ -1,13 +1,12 @@
 /**
  * FakeChatPanel — The "movie set" AI assistant sidebar.
  *
- * Styled to match the real Inkstone chat panel:
- * - Thread-style cards with action names (rewrite, proofread)
- * - OUTPUT sections with code-like monospace blocks
- * - Input: "Ask, check or research anything..."
+ * Styled to match the real Inkstone chat panel with Lucide icons,
+ * thread tabs, fuel credits, and action cards.
  */
 
 import { useState, useEffect } from "react";
+import { Zap, SquarePen, ChevronsRight, ArrowUp } from "lucide-react";
 import type { WalkthroughState } from "./walkthrough";
 import type { Act } from "./step-indicator";
 import type { ResearchPhase } from "./research-insert";
@@ -39,20 +38,35 @@ export function FakeChatPanel({
 
   return (
     <div className="fake-chat">
-      {/* Panel header — matches real app with fuel credits */}
+      {/* Header — fuel credits + actions */}
       <div className="fake-chat__header">
         <div className="fake-chat__header-left">
-          <span className="fake-chat__fuel">⚡ 7346</span>
+          <button className="fake-chat__fuel-btn">
+            <Zap size={14} className="fake-chat__fuel-icon" />
+            <span>7,346</span>
+          </button>
         </div>
         <div className="fake-chat__header-right">
-          <span className="fake-chat__header-icon">⏱</span>
-          <span className="fake-chat__header-icon">⟫</span>
+          <button className="fake-chat__header-icon-btn" title="New thread">
+            <SquarePen size={14} />
+          </button>
+          <button className="fake-chat__header-icon-btn" title="Collapse">
+            <ChevronsRight size={14} />
+          </button>
         </div>
       </div>
 
-      {/* Thread area */}
-      <div className="fake-chat__messages">
-        {/* Act 1: User prompt → rewrite action card */}
+      {/* Thread tabs */}
+      <div className="fake-chat__tabs">
+        <button className="fake-chat__tab fake-chat__tab--active">
+          <span className="fake-chat__tab-dot" />
+          Thread 1
+        </button>
+      </div>
+
+      {/* Messages area */}
+      <div className="fake-chat__messages" data-tour-target="chat-messages">
+        {/* Act 1: User prompt → rewrite action */}
         {(state === "act1" || state === "act1-complete" || state === "act2" || state === "act2-complete" || state === "act3" || state === "act3-complete") && (
           <>
             <div className="fake-chat__user-msg">
@@ -70,13 +84,11 @@ export function FakeChatPanel({
               )}
             </div>
 
-            {/* Show rewrite action card after typing completes */}
             {(act1TypingDone || state !== "act1") && (
               <div className="fake-chat__action-card">
                 <div className="fake-chat__action-header">
                   <span className="fake-chat__action-dot" />
                   <span className="fake-chat__action-name">rewrite</span>
-                  <span className="fake-chat__action-nav">‹ 2 ›</span>
                 </div>
                 <div className="fake-chat__action-output">
                   <span className="fake-chat__output-label">OUTPUT</span>
@@ -108,7 +120,7 @@ export function FakeChatPanel({
             </div>
 
             {act3TypingDone && (
-              <div className="fake-chat__action-card">
+              <div className="fake-chat__action-card" data-tour-target="chat-insert-btn">
                 <div className="fake-chat__action-header">
                   <span className="fake-chat__action-dot fake-chat__action-dot--blue" />
                   <span className="fake-chat__action-name">web_search</span>
@@ -123,11 +135,13 @@ export function FakeChatPanel({
       </div>
 
       {/* Input area */}
-      <div className="fake-chat__input-area">
-        <div className="fake-chat__input" aria-label="Chat input">
+      <div className="fake-chat__input-area" data-tour-target="chat-input">
+        <div className="fake-chat__input">
           Ask, check or research anything...
         </div>
-        <div className="fake-chat__send-btn">↑</div>
+        <button className="fake-chat__send-btn">
+          <ArrowUp size={16} />
+        </button>
       </div>
     </div>
   );
