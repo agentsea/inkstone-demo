@@ -1,25 +1,55 @@
 /**
  * Walkthrough Script — All canned content for the 3-act demo.
  *
+ * Content based on real Substack article "The Craftsman Table and the
+ * IKEA Desk" — a real knowledge work session, not a contrived example.
+ *
  * Every word, every diff, every timing value lives here.
  * Zero API calls. Zero runtime cost per visitor.
  */
 
 // ============================================================
+// DOCUMENT CONTEXT
+// ============================================================
+
+export const DOC = {
+  /** Document title shown in the title bar */
+  title: "The Craftsman Table and the IKEA Desk",
+  /** Project name shown below title */
+  project: "Substack Articles",
+} as const;
+
+// ============================================================
+// SIDEBAR — Project tree shown when sidebar opens at Step 13
+// ============================================================
+
+export const SIDEBAR = {
+  projectName: "Substack Articles",
+  documents: [
+    { name: "The Craftsman Table and the IKEA Desk", active: true, icon: "file" as const },
+    { name: "Web Search: Jevons Paradox origin", active: false, icon: "search" as const },
+    { name: "Deep Research: AI writing tools landscape", active: false, icon: "research" as const },
+    { name: "Notes: Ben Goertzel jagged edge quotes", active: false, icon: "file" as const },
+    { name: "Draft: Future of Knowledge Work", active: false, icon: "file" as const },
+  ],
+} as const;
+
+// ============================================================
 // ACT 1: "The Rewrite"
+// Rough notes about the IKEA/craftsman metaphor → polished prose
 // ============================================================
 
 export const ACT1 = {
-  /** The rough draft the visitor first sees */
+  /** Rough notes — how a writer actually drafts */
   roughDraft:
-    "Coffee has been drank by people for a really long time. It started in Africa somewhere and then got popular in Europe and now basically everyone drinks it. There's a lot of coffee companies now.",
+    "AI is like the difference between an IKEA table and a handmade one. Before IKEA you had to make tables by hand or pay a lot. After IKEA everyone gets a table. Not amazing but functional. But the craftsman tables didn\u2019t go away. We just ended up with more tables everywhere. Kitchen table, dining room, side tables, office desk. That\u2019s called Jevons Paradox I think. When something gets cheap we want more of it not less.",
 
-  /** The polished version after AI "rewrites" it */
+  /** Polished version — from the published article */
   polishedDraft:
-    "From its origins in the Ethiopian highlands, coffee has journeyed across continents to become the world\u2019s most traded commodity after oil. Today, over 2.25 billion cups are consumed daily \u2014 a testament to the humble bean\u2019s extraordinary cultural grip.",
+    "When it comes to writing and AI, think about it like a hand-crafted table versus an IKEA table. Before IKEA, every table was handcrafted and that meant only a small number of people could afford them. After IKEA everyone can have a good, solid table. Maybe not a craftsman level table, but a table that works and does what a table should do. But IKEA didn\u2019t make the craftsman tables disappear. We just got more tables. That\u2019s Jevons Paradox in action. Once something gets cheaper and more ubiquitous, we want more of it.",
 
   /** Chat message that triggers the rewrite */
-  chatPrompt: "Rewrite this to be compelling and well-researched",
+  chatPrompt: "Tighten this up and make it flow better. Keep my voice.",
 
   /** Timing */
   typingSpeed: 50, // ms per character for chat message
@@ -29,79 +59,191 @@ export const ACT1 = {
 
 // ============================================================
 // ACT 2: "The Proofread"
+// The polished draft has a typo and a missing word
 // ============================================================
 
 export const ACT2 = {
-  /** Text with deliberate errors (shown after Act 1 completes) */
+  /** Text with deliberate errors */
   textWithErrors:
-    "From its origins in the Ethiopian hghlands, coffee has journeyed across continents to become the world\u2019s most traded commodity after oil. Today, over 2.25 billion cups consumed daily \u2014 a testament to the humble bean\u2019s extraordinary cultural grip.",
+    "When it comes to writing and AI, think about it like a hand-crafted table versus an IKEA table. Before IKEA, every table was handcrafed and that meant only a small number of people could them. After IKEA everyone can have a good, solid table. Maybe not a craftsman level table, but a table that works and does what a table should do. But IKEA didn\u2019t make the craftsman tables disappear. We just got more tables. That\u2019s Jevons Paradox in action. Once something gets cheaper and more ubiquitous, we want more of it.",
 
   /** Clean text after all diffs are accepted */
   cleanText:
-    "From its origins in the Ethiopian highlands, coffee has journeyed across continents to become the world\u2019s most traded commodity after oil. Today, over 2.25 billion cups are consumed daily \u2014 a testament to the humble bean\u2019s extraordinary cultural grip.",
+    "When it comes to writing and AI, think about it like a hand-crafted table versus an IKEA table. Before IKEA, every table was handcrafted and that meant only a small number of people could afford them. After IKEA everyone can have a good, solid table. Maybe not a craftsman level table, but a table that works and does what a table should do. But IKEA didn\u2019t make the craftsman tables disappear. We just got more tables. That\u2019s Jevons Paradox in action. Once something gets cheaper and more ubiquitous, we want more of it.",
 
   /** Individual diffs to animate */
   diffs: [
     {
       type: "replace" as const,
-      original: "hghlands",
-      corrected: "highlands",
-      description: "Spelling correction",
+      original: "handcrafed",
+      corrected: "handcrafted",
+      description: "Spelling: missing 't'",
     },
     {
       type: "insert" as const,
-      before: "cups",
-      after: "cups are",
-      inserted: "are",
-      description: "Missing word insertion",
+      before: "could",
+      after: "could afford",
+      inserted: "afford",
+      description: "Missing word: 'afford'",
     },
   ],
 
   /** Timing */
-  scanningDelay: 1200, // ms for "Scanning for errors..." text
-  diffStaggerDelay: 400, // ms between each diff appearing
-  acceptAllDelay: 1500, // ms before "Accept All" auto-clicks
-  resolveAnimationDuration: 600, // ms for diffs to resolve
+  scanningDelay: 1200,
+  diffStaggerDelay: 400,
+  acceptAllDelay: 1500,
+  resolveAnimationDuration: 600,
 } as const;
 
 // ============================================================
 // ACT 3: "The Research"
+// Look up Jevons Paradox — a fact referenced in the article
 // ============================================================
 
 export const ACT3 = {
-  /** User's research query in chat */
-  chatPrompt: "What are the environmental impacts of coffee farming?",
+  /** User's research query */
+  chatPrompt: "What is Jevons Paradox and who first described it?",
 
   /** AI's synthesized response with inline citations */
   researchResponse:
-    'Coffee farming contributes to deforestation, with an estimated 2.5 million acres of forest cleared annually for production [1]. Water usage is also significant \u2014 producing one cup requires approximately 140 liters [2]. However, shade-grown and organic methods are reducing these impacts [3].',
+    "Jevons Paradox was first described by English economist William Stanley Jevons in his 1865 book The Coal Question [1]. He observed that as coal use became more efficient, total consumption increased rather than decreased [2]. The principle has since been applied broadly \u2014 when a resource becomes cheaper or more efficient to use, total consumption often rises because demand grows faster than efficiency gains [3].",
 
   /** Citation sources */
   citations: [
     {
       id: 1,
-      title: "Global Forest Watch — Coffee & Deforestation Report",
+      title: "Jevons, W.S. \u2014 The Coal Question (1865)",
       url: "#",
     },
     {
       id: 2,
-      title: "Water Footprint Network — Coffee Production Analysis",
+      title: "Alcott, B. \u2014 Jevons\u2019 Paradox, Ecological Economics (2005)",
       url: "#",
     },
     {
       id: 3,
-      title: "Rainforest Alliance — Sustainable Coffee Farming",
+      title: "Sorrell, S. \u2014 The Rebound Effect, UK Energy Research Centre",
       url: "#",
     },
   ],
 
   /** Timing */
-  typingSpeed: 45, // ms per character for chat query
-  loadingShimmerDuration: 1800, // ms for loading skeleton
-  responseTypingSpeed: 20, // ms per character for AI response
-  insertToDocDelay: 1200, // ms before "Insert to Doc" auto-clicks
-  insertAnimationDuration: 800, // ms for content to flow into doc
+  typingSpeed: 45,
+  loadingShimmerDuration: 1800,
+  responseTypingSpeed: 20,
+  insertToDocDelay: 1200,
+  insertAnimationDuration: 800,
 } as const;
+
+// ============================================================
+// GUIDED TOUR STEPS
+// ============================================================
+
+export const TOUR_STEPS = [
+  {
+    id: "intro",
+    target: "editor-area",
+    text: "This is Inkstone \u2014 your AI copilot for knowledge work. Let\u2019s walk through a real writing session.",
+    cta: "Start \u2192",
+    position: "center" as const,
+  },
+  {
+    id: "rough-draft",
+    target: "editor-paragraph",
+    text: "Here\u2019s a rough first draft \u2014 notes and ideas, not polished yet.",
+    cta: "Next \u2192",
+    position: "bottom" as const,
+  },
+  {
+    id: "ask-rewrite",
+    target: "chat-input",
+    text: "Ask your AI buddy to tighten it up. Watch what happens.",
+    cta: "Rewrite \u2192",
+    position: "left" as const,
+    triggersAct: "act1" as const,
+  },
+  {
+    id: "watch-morph",
+    target: "editor-paragraph",
+    text: "Watch \u2014 the AI rewrites your rough notes into polished prose.",
+    position: "top" as const,
+    autoAdvance: true, // advances when morph animation completes
+  },
+  {
+    id: "rewrite-done",
+    target: "editor-paragraph",
+    text: "Notes \u2192 polished paragraph. No copy-paste between apps.",
+    cta: "Next: Proofreading \u2192",
+    position: "bottom" as const,
+  },
+  {
+    id: "click-proofread",
+    target: "toolbar-proofread",
+    text: "Now click Proofread to scan for errors.",
+    cta: "Proofread \u2192",
+    position: "bottom" as const,
+    triggersAct: "act2" as const,
+  },
+  {
+    id: "scanning",
+    target: "editor-paragraph",
+    text: "Scanning your document...",
+    position: "top" as const,
+    autoAdvance: true,
+  },
+  {
+    id: "see-diffs",
+    target: "editor-paragraph",
+    text: "Red = delete. Green = insert. It caught a typo and a missing word.",
+    cta: "Accept All \u2192",
+    position: "bottom" as const,
+  },
+  {
+    id: "diffs-resolved",
+    target: "editor-paragraph",
+    text: "All fixed. One click.",
+    cta: "Next: Research \u2192",
+    position: "bottom" as const,
+  },
+  {
+    id: "ask-research",
+    target: "chat-input",
+    text: "Need to look something up? Just ask. Inkstone searches the web for you.",
+    cta: "Search \u2192",
+    position: "left" as const,
+    triggersAct: "act3" as const,
+  },
+  {
+    id: "searching",
+    target: "chat-messages",
+    text: "Searching the web and synthesizing an answer with sources...",
+    position: "left" as const,
+    autoAdvance: true,
+  },
+  {
+    id: "insert-to-doc",
+    target: "chat-insert-btn",
+    text: "Click to insert the research into your document. Citations included.",
+    cta: "Insert to Doc \u2192",
+    position: "left" as const,
+  },
+  {
+    id: "sidebar-reveal",
+    target: "sidebar",
+    text: "Everything lives in your project. Drafts, research, web searches \u2014 nothing gets lost.",
+    position: "right" as const,
+    opensSidebar: true,
+  },
+  {
+    id: "finale",
+    target: "center",
+    text: "Think. Brainstorm. Write. Research. Edit. Iterate. All in one place.",
+    cta: "Try for FREE \u2192",
+    ctaLink: "https://accounts.inkstone.pro/sign-up",
+    position: "center" as const,
+    showReplay: true,
+  },
+] as const;
 
 // ============================================================
 // Global Timing
@@ -110,7 +252,6 @@ export const ACT3 = {
 export const TIMING = {
   /** Delay between acts when auto-playing */
   interActDelay: 1000,
-
-  /** How long the complete walkthrough takes (~30s) */
-  estimatedTotalDuration: 30_000,
+  /** How long the complete walkthrough takes (~30-45s guided) */
+  estimatedTotalDuration: 40_000,
 } as const;

@@ -13,7 +13,7 @@ import type { ResearchPhase } from "./research-insert";
 import { TextMorph } from "./text-morph";
 import { DiffAnimation } from "./diff-animation";
 import { ResearchDocInsert } from "./research-insert";
-import { ACT1, ACT2 } from "../data/walkthrough-script";
+import { DOC, ACT1, ACT2 } from "../data/walkthrough-script";
 import "./fake-editor.css";
 import "./animations.css";
 
@@ -31,8 +31,8 @@ export function FakeEditor({ state, researchPhase = "idle", onActComplete }: Fak
       {/* Document header bar */}
       <div className="fake-editor__header">
         <div className="fake-editor__header-left">
-          <span className="fake-editor__doc-title">Coffee Article Draft</span>
-          <span className="fake-editor__doc-subtitle">My Project</span>
+          <span className="fake-editor__doc-title">{DOC.title}</span>
+          <span className="fake-editor__doc-subtitle">{DOC.project}</span>
         </div>
         <div className="fake-editor__header-right">
           <span className="fake-editor__edited">Edited just now</span>
