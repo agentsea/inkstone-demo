@@ -97,7 +97,6 @@
 
 .fake-editor__toolbar-label--active {
   color: var(--text-primary);
-  border-bottom-color: var(--accent);
 }
 
 .fake-editor__toolbar-icons {
