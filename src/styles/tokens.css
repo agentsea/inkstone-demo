@@ -54,56 +54,62 @@ body,
 
 /* ========================
    DARK THEME (default)
-   Matched to real Inkstone app
+   Exact values from real Inkstone app CSS
    ======================== */
 :root,
 [data-theme="dark"] {
-  --bg-primary: #0f111a;
-  --bg-secondary: #141620;
-  --bg-editor: #171926;
-  --bg-chat: #111320;
-  --bg-toolbar: #1a1c2e;
-  --bg-toolbar-tabs: #141620;
-  --bg-card: #1a1c2a;
-  --bg-hover: #22243a;
-  --bg-input: #1a1c2e;
+  --bg-primary: #0d0d11;
+  --bg-secondary: #1c1d24;
+  --bg-editor: #121215;
+  --bg-chat: #1c1d24;
+  --bg-toolbar: #090a0f;
+  --bg-toolbar-tabs: #090a0f;
+  --bg-card: #252630;
+  --bg-hover: rgba(138, 180, 248, 0.12);
+  --bg-input: #0d0d11;
 
-  --text-primary: #e8e8ec;
-  --text-secondary: #9898a8;
-  --text-muted: #606070;
-  --text-accent: #7c8aff;
+  --text-primary: #f8fafc;
+  --text-secondary: #e3e6f3;
+  --text-muted: #9da4b8;
+  --text-accent: #8ab4f8;
 
-  --border-primary: #282a3e;
-  --border-subtle: #1e2032;
+  --border-primary: rgba(255, 255, 255, 0.10);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.18);
 
   --diff-insert-bg: rgba(34, 197, 94, 0.15);
   --diff-insert-text: #4ade80;
   --diff-delete-bg: rgba(239, 68, 68, 0.15);
   --diff-delete-text: #f87171;
 
-  --accent: #7c8aff;
-  --accent-hover: #6570e6;
+  --accent: #8ab4f8;
+  --accent-hover: #6d9ce0;
+  --accent-soft: rgba(138, 180, 248, 0.18);
+  --accent-muted: rgba(138, 180, 248, 0.12);
 
-  --ai-message-bg: #171930;
-  --user-message-bg: #1a2a1e;
+  --chat-human-bg: #4a6fa5;
+  --chat-human-text: #f0f4f8;
+  --chat-ai-bg: #1a1b22;
+  --chat-tool-bg: #1a1b22;
 
-  --shimmer-from: #171926;
-  --shimmer-to: #22243a;
+  --shimmer-from: #121215;
+  --shimmer-to: #252630;
 
-  --toolbar-icon: #606070;
-  --toolbar-icon-hover: #9898a8;
-  --toolbar-tab-active: #e8e8ec;
-  --toolbar-tab-inactive: #606070;
+  --toolbar-icon: #9da4b8;
+  --toolbar-icon-hover: #e3e6f3;
+  --toolbar-tab-active: #f8fafc;
+  --toolbar-tab-inactive: hsl(0, 0%, 50%);
+  --toolbar-label: hsl(0, 0%, 50%);
 
-  --cursor-color: #e8e8ec;
+  --cursor-color: #f8fafc;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
 
-  --chat-action-bg: #1a1c30;
-  --chat-action-border: #282a40;
-  --chat-output-bg: #111320;
+  --chat-action-bg: #1a1b22;
+  --chat-action-border: rgba(255, 255, 255, 0.10);
+  --chat-output-bg: #1a1b22;
 }
 
 /* ========================

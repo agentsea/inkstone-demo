@@ -53,13 +53,19 @@
   gap: 12px;
 }
 
-/* User message — appears as inline text */
+/* User message — blue bubble matching real app */
 .fake-chat__user-msg {
   font-family: var(--font-sans);
   font-size: 14px;
   line-height: 1.5;
-  color: var(--text-primary);
-  padding: 4px 0;
+  color: var(--chat-human-text, #f0f4f8);
+  background: var(--chat-human-bg, #4a6fa5);
+  padding: 8px 12px;
+  border-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-sm);
+  align-self: flex-end;
+  max-width: 90%;
+  box-shadow: var(--shadow-sm);
 }
 
 /* Action cards — thread-style with dot + name + output */
@@ -122,7 +128,8 @@
   font-size: 12px;
   line-height: 1.6;
   color: var(--text-secondary);
-  background: var(--chat-output-bg, var(--bg-secondary));
+  background: var(--chat-tool-bg, #1a1b22);
+  border: 1px solid var(--border-primary);
   padding: 8px 10px;
   border-radius: var(--radius-sm);
 }

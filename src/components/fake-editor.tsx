@@ -51,25 +51,31 @@ export function FakeEditor({ state, researchPhase = "idle", onActComplete }: Fak
         <span className="fake-editor__tab">PRINT</span>
       </div>
 
-      {/* Toolbar row 2: formatting icons */}
+      {/* Toolbar row 2: formatting icons — mirrors real toolbar layout */}
       <div className="fake-editor__toolbar">
         <div className="fake-editor__toolbar-group">
+          {/* AI section */}
+          <ToolbarIcon icon="glasses" label="Proofread" active={state === "act2"} />
+          <ToolbarIcon icon="check" label="Fact-check" />
+          <ToolbarIcon icon="book" label="Deep Research" />
+          <ToolbarIcon icon="globe" label="Web Search" />
+          <div className="fake-editor__toolbar-divider" />
+          {/* Style section */}
+          <span className="fake-editor__toolbar-dropdown">Heading 1</span>
+          <div className="fake-editor__toolbar-divider" />
+          {/* Format section */}
           <ToolbarIcon icon="bold" />
           <ToolbarIcon icon="italic" />
           <ToolbarIcon icon="underline" />
           <ToolbarIcon icon="strike" />
-          <div className="fake-editor__toolbar-divider" />
           <ToolbarIcon icon="code" />
           <ToolbarIcon icon="link" />
           <div className="fake-editor__toolbar-divider" />
-          <ToolbarIcon icon="heading" />
-        </div>
-        <div className="fake-editor__toolbar-group">
-          <button
-            className={`fake-editor__toolbar-btn ${state === "act2" ? "fake-editor__toolbar-btn--active" : ""}`}
-          >
-            Proofread
-          </button>
+          {/* Align section */}
+          <ToolbarIcon icon="alignL" />
+          <ToolbarIcon icon="alignC" />
+          <ToolbarIcon icon="alignR" />
+          <ToolbarIcon icon="justify" />
         </div>
       </div>
 
@@ -130,19 +136,30 @@ function renderEditorContent(
   }
 }
 
-function ToolbarIcon({ icon }: { icon: string }) {
+function ToolbarIcon({ icon, label, active }: { icon: string; label?: string; active?: boolean }) {
   const icons: Record<string, string> = {
     bold: "B",
     italic: "I",
     underline: "U",
     strike: "S",
-    code: "<>",
+    code: "⟨⟩",
     link: "🔗",
-    heading: "H1",
+    glasses: "👓",
+    check: "✓",
+    book: "📖",
+    globe: "🌐",
+    alignL: "≡",
+    alignC: "≡",
+    alignR: "≡",
+    justify: "≡",
   };
 
   return (
-    <button className="fake-editor__toolbar-icon" aria-label={icon}>
+    <button
+      className={`fake-editor__toolbar-icon ${active ? "fake-editor__toolbar-icon--active" : ""}`}
+      aria-label={label || icon}
+      title={label}
+    >
       {icons[icon] || "•"}
     </button>
   );
