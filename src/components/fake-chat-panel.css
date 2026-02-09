@@ -194,21 +194,21 @@
 .fake-chat__input-area {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
+  gap: 10px;
+  padding: 12px 14px;
   border-top: 1px solid var(--border-subtle);
   flex-shrink: 0;
 }
 
 .fake-chat__input {
   flex: 1;
-  padding: 10px 12px;
+  padding: 12px 14px;
   background: var(--bg-input);
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-md);
   color: var(--text-muted);
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .fake-chat__send-btn {
