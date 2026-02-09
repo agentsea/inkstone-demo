@@ -84,6 +84,19 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
   // --- GUIDED TOUR: advance to next step ---
   const advanceTour = useCallback(() => {
     if (!tourActive) return;
+
+    // First, execute the CURRENT step's trigger (if any)
+    const currentStepDef = TOUR_STEPS[tourStep];
+    if (currentStepDef && "triggersAct" in currentStepDef) {
+      setChatTypingDone(false);
+      switch (currentStepDef.triggersAct) {
+        case "act1": setState("act1"); break;
+        case "act2": setState("act2"); break;
+        case "act3": setState("act3"); break;
+      }
+    }
+
+    // Then move to next step
     const nextIdx = tourStep + 1;
     if (nextIdx >= TOUR_STEPS.length) {
       setTourActive(false);
@@ -92,19 +105,9 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
 
     const nextStep = TOUR_STEPS[nextIdx];
 
-    // Handle sidebar opening
+    // Handle sidebar opening on the NEXT step
     if (nextStep && "opensSidebar" in nextStep && nextStep.opensSidebar) {
       setSidebarOpen(true);
-    }
-
-    // Handle act triggers
-    if (nextStep && "triggersAct" in nextStep) {
-      setChatTypingDone(false);
-      switch (nextStep.triggersAct) {
-        case "act1": setState("act1"); break;
-        case "act2": setState("act2"); break;
-        case "act3": setState("act3"); break;
-      }
     }
 
     setTourStep(nextIdx);
@@ -177,30 +180,8 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
   }, []);
 
   const handleTourCtaClick = useCallback(() => {
-    const step = TOUR_STEPS[tourStep];
-
-    // Special handling for steps that trigger actions
-    if (step && "triggersAct" in step) {
-      // The act is already triggered in advanceTour, just advance
-      advanceTour();
-      return;
-    }
-
-    // For "Accept All" step, trigger diff resolution then advance
-    if (step?.id === "see-diffs") {
-      // The diff animation handles its own Accept All timing
-      advanceTour();
-      return;
-    }
-
-    // For sidebar reveal
-    if (step && "opensSidebar" in step) {
-      advanceTour();
-      return;
-    }
-
     advanceTour();
-  }, [tourStep, advanceTour]);
+  }, [advanceTour]);
 
   return (
     <div className="walkthrough" data-theme={theme}>
@@ -245,6 +226,14 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
           target={currentStep.target}
           position={currentStep.position}
           visible={true}
+          noOverlay={
+            currentStep.id === "watch-morph" ||
+            currentStep.id === "scanning" ||
+            currentStep.id === "see-diffs" ||
+            currentStep.id === "searching" ||
+            currentStep.id === "insert-to-doc" ||
+            currentStep.id === "sidebar-reveal"
+          }
           onCtaClick={handleTourCtaClick}
           onReplay={handleReplay}
         />

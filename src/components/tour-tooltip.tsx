@@ -19,6 +19,7 @@ interface TourTooltipProps {
   target: string;
   position: "top" | "bottom" | "left" | "right" | "center";
   visible: boolean;
+  noOverlay?: boolean; // Don't dim — let user see the content (diffs, morph, etc.)
   onCtaClick?: () => void;
   onReplay?: () => void;
 }
@@ -31,6 +32,7 @@ export function TourTooltip({
   target,
   position,
   visible,
+  noOverlay = false,
   onCtaClick,
   onReplay,
 }: TourTooltipProps) {
@@ -126,17 +128,19 @@ export function TourTooltip({
     <AnimatePresence>
       {visible && (
         <>
-          {/* Simple dim overlay */}
-          <m.div
-            className="tour-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          />
+          {/* Dim overlay — hidden when noOverlay so user can see content */}
+          {!noOverlay && (
+            <m.div
+              className="tour-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            />
+          )}
 
           {/* Highlight ring around target */}
-          {showHighlight && (
+          {showHighlight && !noOverlay && (
             <m.div
               className="tour-highlight"
               style={highlightStyle}
