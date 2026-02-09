@@ -31,6 +31,9 @@ export function useResearchPhase(
       return;
     }
 
+    // If already inserted, don't restart the sequence
+    if (phase === "inserted") return;
+
     setPhase("loading");
     const timers: ReturnType<typeof setTimeout>[] = [];
 

@@ -1,5 +1,5 @@
 /* ============================================================
-   Fake Editor — Styled to look exactly like Inkstone's editor
+   Fake Editor — Styled to match real Inkstone app
    ============================================================ */
 
 .fake-editor {
@@ -8,12 +8,94 @@
   height: 100%;
 }
 
-/* --- Toolbar --- */
+/* --- Document Header Bar --- */
+.fake-editor__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: var(--bg-toolbar-tabs);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.fake-editor__header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.fake-editor__doc-title {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.fake-editor__doc-subtitle {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.fake-editor__header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fake-editor__edited {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.fake-editor__claims-btn {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--text-secondary);
+  padding: 4px 10px;
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  cursor: default;
+}
+
+/* --- Toolbar Tabs Row (AI | STYLE | FORMAT | ...) --- */
+.fake-editor__toolbar-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 16px;
+  background: var(--bg-toolbar-tabs);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  overflow-x: auto;
+}
+
+.fake-editor__tab {
+  padding: 8px 16px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--toolbar-tab-inactive);
+  cursor: default;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color var(--duration-fast) ease;
+}
+
+.fake-editor__tab--active {
+  color: var(--toolbar-tab-active, var(--text-primary));
+  border-bottom-color: var(--accent);
+}
+
+/* --- Toolbar Icons Row --- */
 .fake-editor__toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-sm) var(--space-md);
+  padding: 6px 16px;
   background: var(--bg-toolbar);
   border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
@@ -29,14 +111,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 28px;
   background: transparent;
   border: none;
   border-radius: var(--radius-sm);
   color: var(--toolbar-icon);
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: default;
   transition: color var(--duration-fast) ease;
@@ -49,9 +131,9 @@
 
 .fake-editor__toolbar-divider {
   width: 1px;
-  height: 20px;
+  height: 18px;
   background: var(--border-primary);
-  margin: 0 var(--space-sm);
+  margin: 0 6px;
 }
 
 .fake-editor__toolbar-btn {
@@ -95,7 +177,7 @@
 .fake-editor__paragraph {
   font-family: var(--font-sans);
   font-size: 16px;
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--text-primary);
   letter-spacing: -0.01em;
 }
@@ -124,5 +206,14 @@
 
   .fake-editor__paragraph {
     font-size: 15px;
+  }
+
+  .fake-editor__toolbar-tabs {
+    padding: 0 8px;
+  }
+
+  .fake-editor__tab {
+    padding: 6px 10px;
+    font-size: 10px;
   }
 }

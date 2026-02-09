@@ -1,9 +1,10 @@
 /**
  * FakeChatPanel — The "movie set" AI assistant sidebar.
  *
- * Looks exactly like Inkstone's chat panel. Just styled divs.
- * Messages animate in with the TypingAnimation component.
- * Act 3 shows the research response with citations.
+ * Styled to match the real Inkstone chat panel:
+ * - Thread-style cards with action names (rewrite, proofread)
+ * - OUTPUT sections with code-like monospace blocks
+ * - Input: "Ask, check or research anything..."
  */
 
 import { useState, useEffect } from "react";
@@ -31,75 +32,102 @@ export function FakeChatPanel({
   const [act1TypingDone, setAct1TypingDone] = useState(false);
   const [act3TypingDone, setAct3TypingDone] = useState(false);
 
-  // Reset typing states when state changes
   useEffect(() => {
-    if (state === "act1") {
-      setAct1TypingDone(false);
-    }
-    if (state === "act3") {
-      setAct3TypingDone(false);
-    }
+    if (state === "act1") setAct1TypingDone(false);
+    if (state === "act3") setAct3TypingDone(false);
   }, [state]);
 
   return (
     <div className="fake-chat">
-      {/* Panel header */}
+      {/* Panel header — matches real app with fuel credits */}
       <div className="fake-chat__header">
-        <span className="fake-chat__title">AI Assistant</span>
-        <span className="fake-chat__status">Online</span>
+        <div className="fake-chat__header-left">
+          <span className="fake-chat__fuel">⚡ 7346</span>
+        </div>
+        <div className="fake-chat__header-right">
+          <span className="fake-chat__header-icon">⏱</span>
+          <span className="fake-chat__header-icon">⟫</span>
+        </div>
       </div>
 
-      {/* Messages area */}
+      {/* Thread area */}
       <div className="fake-chat__messages">
-        {/* Act 1: User types rewrite prompt */}
+        {/* Act 1: User prompt → rewrite action card */}
         {(state === "act1" || state === "act1-complete" || state === "act2" || state === "act2-complete" || state === "act3" || state === "act3-complete") && (
-          <div className="fake-chat__message fake-chat__message--user">
-            {state === "act1" && !act1TypingDone ? (
-              <TypingAnimation
-                text={ACT1.chatPrompt}
-                speed={ACT1.typingSpeed}
-                onComplete={() => {
-                  setAct1TypingDone(true);
-                  onChatTypingDone?.();
-                }}
-              />
-            ) : (
-              ACT1.chatPrompt
+          <>
+            <div className="fake-chat__user-msg">
+              {state === "act1" && !act1TypingDone ? (
+                <TypingAnimation
+                  text={ACT1.chatPrompt}
+                  speed={ACT1.typingSpeed}
+                  onComplete={() => {
+                    setAct1TypingDone(true);
+                    onChatTypingDone?.();
+                  }}
+                />
+              ) : (
+                ACT1.chatPrompt
+              )}
+            </div>
+
+            {/* Show rewrite action card after typing completes */}
+            {(act1TypingDone || state !== "act1") && (
+              <div className="fake-chat__action-card">
+                <div className="fake-chat__action-header">
+                  <span className="fake-chat__action-dot" />
+                  <span className="fake-chat__action-name">rewrite</span>
+                  <span className="fake-chat__action-nav">‹ 2 ›</span>
+                </div>
+                <div className="fake-chat__action-output">
+                  <span className="fake-chat__output-label">OUTPUT</span>
+                  <div className="fake-chat__output-content">
+                    Rewrote 1 block(s).
+                  </div>
+                </div>
+              </div>
             )}
-          </div>
+          </>
         )}
 
-        {/* Act 3: User types research query */}
+        {/* Act 3: Research query → response */}
         {(state === "act3" || state === "act3-complete") && (
-          <div className="fake-chat__message fake-chat__message--user">
-            {state === "act3" && !act3TypingDone ? (
-              <TypingAnimation
-                text={ACT3.chatPrompt}
-                speed={ACT3.typingSpeed}
-                onComplete={() => {
-                  setAct3TypingDone(true);
-                  onChatTypingDone?.();
-                }}
-              />
-            ) : (
-              ACT3.chatPrompt
-            )}
-          </div>
-        )}
+          <>
+            <div className="fake-chat__user-msg">
+              {state === "act3" && !act3TypingDone ? (
+                <TypingAnimation
+                  text={ACT3.chatPrompt}
+                  speed={ACT3.typingSpeed}
+                  onComplete={() => {
+                    setAct3TypingDone(true);
+                    onChatTypingDone?.();
+                  }}
+                />
+              ) : (
+                ACT3.chatPrompt
+              )}
+            </div>
 
-        {/* Act 3: AI research response */}
-        {(state === "act3" || state === "act3-complete") && act3TypingDone && (
-          <div className="fake-chat__message fake-chat__message--ai">
-            <ResearchChatResponse phase={researchPhase} />
-          </div>
+            {act3TypingDone && (
+              <div className="fake-chat__action-card">
+                <div className="fake-chat__action-header">
+                  <span className="fake-chat__action-dot fake-chat__action-dot--blue" />
+                  <span className="fake-chat__action-name">web_search</span>
+                </div>
+                <div className="fake-chat__action-output">
+                  <ResearchChatResponse phase={researchPhase} />
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
 
-      {/* Input area (decorative) */}
+      {/* Input area */}
       <div className="fake-chat__input-area">
         <div className="fake-chat__input" aria-label="Chat input">
-          Ask anything...
+          Ask, check or research anything...
         </div>
+        <div className="fake-chat__send-btn">↑</div>
       </div>
     </div>
   );

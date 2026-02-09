@@ -1,5 +1,5 @@
 /* ============================================================
-   Fake Chat Panel — Styled to match Inkstone's AI sidebar
+   Fake Chat Panel — Styled to match real Inkstone AI sidebar
    ============================================================ */
 
 .fake-chat {
@@ -8,73 +8,138 @@
   height: 100%;
 }
 
-/* --- Header --- */
+/* --- Header with fuel credits --- */
 .fake-chat__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-sm) var(--space-md);
-  background: var(--bg-toolbar);
+  padding: 10px 14px;
+  background: var(--bg-toolbar-tabs);
   border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
 }
 
-.fake-chat__title {
+.fake-chat__header-left {
+  display: flex;
+  align-items: center;
+}
+
+.fake-chat__fuel {
   font-family: var(--font-sans);
   font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-weight: 500;
+  color: #4ade80;
 }
 
-.fake-chat__status {
-  font-family: var(--font-sans);
-  font-size: 11px;
-  color: var(--diff-insert-text);
+.fake-chat__header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* --- Messages --- */
+.fake-chat__header-icon {
+  font-size: 14px;
+  color: var(--text-muted);
+  cursor: default;
+}
+
+/* --- Thread Messages --- */
 .fake-chat__messages {
   flex: 1;
   overflow-y: auto;
-  padding: var(--space-md);
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: 12px;
 }
 
-.fake-chat__message {
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-lg);
+/* User message — appears as inline text */
+.fake-chat__user-msg {
   font-family: var(--font-sans);
   font-size: 14px;
   line-height: 1.5;
-  max-width: 90%;
-  word-wrap: break-word;
-}
-
-.fake-chat__message--user {
-  align-self: flex-end;
-  background: var(--user-message-bg);
   color: var(--text-primary);
-  border-bottom-right-radius: var(--radius-sm);
+  padding: 4px 0;
 }
 
-.fake-chat__message--ai {
-  align-self: flex-start;
-  background: var(--ai-message-bg);
+/* Action cards — thread-style with dot + name + output */
+.fake-chat__action-card {
+  background: var(--chat-action-bg, var(--bg-card));
+  border: 1px solid var(--chat-action-border, var(--border-primary));
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.fake-chat__action-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+}
+
+.fake-chat__action-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  flex-shrink: 0;
+}
+
+.fake-chat__action-dot--blue {
+  background: var(--accent);
+}
+
+.fake-chat__action-name {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
   color: var(--text-primary);
-  border-bottom-left-radius: var(--radius-sm);
 }
 
-/* --- Input (decorative) --- */
+.fake-chat__action-nav {
+  margin-left: auto;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.fake-chat__action-output {
+  padding: 0 12px 10px;
+}
+
+.fake-chat__output-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.fake-chat__output-content {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  background: var(--chat-output-bg, var(--bg-secondary));
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+}
+
+/* --- Input Area --- */
 .fake-chat__input-area {
-  padding: var(--space-sm) var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
   border-top: 1px solid var(--border-subtle);
   flex-shrink: 0;
 }
 
 .fake-chat__input {
-  padding: var(--space-sm) var(--space-md);
+  flex: 1;
+  padding: 8px 12px;
   background: var(--bg-input);
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-md);
@@ -83,13 +148,28 @@
   font-size: 13px;
 }
 
+.fake-chat__send-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: default;
+  flex-shrink: 0;
+}
+
 /* --- Responsive --- */
 @media (max-width: 767px) {
   .fake-chat__messages {
-    padding: var(--space-sm);
+    padding: 8px;
   }
 
-  .fake-chat__message {
+  .fake-chat__user-msg {
     font-size: 13px;
   }
 }

@@ -33,9 +33,10 @@ export function Walkthrough({ theme }: WalkthroughProps) {
   const [state, setState] = useState<WalkthroughState>("idle");
   const [chatTypingDone, setChatTypingDone] = useState(false);
 
-  // Research phase drives both chat response and doc insert
+  // Research phase drives both chat response and doc insert.
+  // Keep active during act3-complete so inserted content persists.
   const researchPhase = useResearchPhase(
-    state === "act3" && chatTypingDone,
+    (state === "act3" && chatTypingDone) || state === "act3-complete",
     () => handleActComplete("research")
   );
 

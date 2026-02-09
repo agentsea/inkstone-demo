@@ -1,11 +1,10 @@
 /**
  * FakeEditor — The "movie set" editor surface.
  *
- * Looks exactly like Inkstone's editor. Is actually just divs, spans, and CSS.
- * No TipTap. No ProseMirror. No contentEditable. Just styled HTML.
- *
- * Content is driven by the walkthrough state machine. Each act swaps in
- * its own animation component (TextMorph, DiffAnimation, ResearchDocInsert).
+ * Styled to closely match the real Inkstone app:
+ * - Document header bar (title + "Edited just now" + "Claims")
+ * - Two-row toolbar: tab row (AI | STYLE | FORMAT | ...) + icon row
+ * - Document content area with proper typography
  */
 
 import type { WalkthroughState } from "./walkthrough";
@@ -29,16 +28,41 @@ export function FakeEditor({ state, researchPhase = "idle", onActComplete }: Fak
 
   return (
     <div className="fake-editor">
-      {/* Toolbar silhouette */}
+      {/* Document header bar */}
+      <div className="fake-editor__header">
+        <div className="fake-editor__header-left">
+          <span className="fake-editor__doc-title">Coffee Article Draft</span>
+          <span className="fake-editor__doc-subtitle">My Project</span>
+        </div>
+        <div className="fake-editor__header-right">
+          <span className="fake-editor__edited">Edited just now</span>
+          <span className="fake-editor__claims-btn">Claims</span>
+        </div>
+      </div>
+
+      {/* Toolbar row 1: tabs */}
+      <div className="fake-editor__toolbar-tabs">
+        <span className="fake-editor__tab fake-editor__tab--active">AI</span>
+        <span className="fake-editor__tab">STYLE</span>
+        <span className="fake-editor__tab">FORMAT</span>
+        <span className="fake-editor__tab">ALIGN</span>
+        <span className="fake-editor__tab">LISTS</span>
+        <span className="fake-editor__tab">HISTORY</span>
+        <span className="fake-editor__tab">PRINT</span>
+      </div>
+
+      {/* Toolbar row 2: formatting icons */}
       <div className="fake-editor__toolbar">
         <div className="fake-editor__toolbar-group">
           <ToolbarIcon icon="bold" />
           <ToolbarIcon icon="italic" />
           <ToolbarIcon icon="underline" />
+          <ToolbarIcon icon="strike" />
+          <div className="fake-editor__toolbar-divider" />
+          <ToolbarIcon icon="code" />
+          <ToolbarIcon icon="link" />
           <div className="fake-editor__toolbar-divider" />
           <ToolbarIcon icon="heading" />
-          <ToolbarIcon icon="list" />
-          <ToolbarIcon icon="quote" />
         </div>
         <div className="fake-editor__toolbar-group">
           <button
@@ -111,9 +135,10 @@ function ToolbarIcon({ icon }: { icon: string }) {
     bold: "B",
     italic: "I",
     underline: "U",
-    heading: "H",
-    list: "≡",
-    quote: "❝",
+    strike: "S",
+    code: "<>",
+    link: "🔗",
+    heading: "H1",
   };
 
   return (
