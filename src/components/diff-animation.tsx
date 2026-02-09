@@ -1,76 +1,84 @@
 /**
  * DiffAnimation — Inline red/green proofreading diffs for Act 2.
  *
- * Renders text with animated diff markers that appear sequentially.
- * Deletions: red background + strikethrough.
- * Insertions: green background.
- * "Accept All" resolves all diffs with a smooth fade.
+ * In guided mode, diffs appear and WAIT for external accept signal.
+ * In auto mode, diffs auto-accept after a delay.
+ *
+ * Renders inline red (deletion) and green (insertion) markers.
  */
 
 import { useState, useEffect, useRef } from "react";
-import { m, AnimatePresence } from "motion/react";
+import { m } from "motion/react";
 import { ACT2 } from "../data/walkthrough-script";
 
 interface DiffAnimationProps {
   isActive: boolean;
+  /** When true, diffs hold visible until acceptAll is called */
+  waitForAccept?: boolean;
+  /** External trigger to accept all diffs */
+  acceptAll?: boolean;
+  onDiffsVisible?: () => void;
   onComplete?: () => void;
 }
 
 type DiffPhase = "idle" | "scanning" | "showing-diffs" | "accepting" | "clean";
 
-export function DiffAnimation({ isActive, onComplete }: DiffAnimationProps) {
+export function DiffAnimation({
+  isActive,
+  waitForAccept = false,
+  acceptAll = false,
+  onDiffsVisible,
+  onComplete,
+}: DiffAnimationProps) {
   const [phase, setPhase] = useState<DiffPhase>("idle");
   const [visibleDiffs, setVisibleDiffs] = useState(0);
-  const [showAcceptButton, setShowAcceptButton] = useState(false);
   const onCompleteRef = useRef(onComplete);
+  const onDiffsVisibleRef = useRef(onDiffsVisible);
   onCompleteRef.current = onComplete;
+  onDiffsVisibleRef.current = onDiffsVisible;
 
+  // Main animation sequence
   useEffect(() => {
     if (!isActive) {
       setPhase("idle");
       setVisibleDiffs(0);
-      setShowAcceptButton(false);
       return;
     }
 
-    // Sequence: scanning → show diffs one by one → accept all → clean
     setPhase("scanning");
-
     const timers: ReturnType<typeof setTimeout>[] = [];
 
-    // After scanning delay, start showing diffs
+    // After scanning delay, show diffs one by one
     timers.push(
       setTimeout(() => {
         setPhase("showing-diffs");
 
-        // Stagger each diff
         ACT2.diffs.forEach((_, i) => {
           timers.push(
             setTimeout(() => {
               setVisibleDiffs(i + 1);
 
-              // After last diff, show Accept All button
+              // After last diff appears, notify and optionally auto-accept
               if (i === ACT2.diffs.length - 1) {
                 timers.push(
                   setTimeout(() => {
-                    setShowAcceptButton(true);
+                    onDiffsVisibleRef.current?.();
 
-                    // Auto-click Accept All
-                    timers.push(
-                      setTimeout(() => {
-                        setPhase("accepting");
-                        setShowAcceptButton(false);
-
-                        // After resolve animation, go clean
-                        timers.push(
-                          setTimeout(() => {
-                            setPhase("clean");
-                            onCompleteRef.current?.();
-                          }, ACT2.resolveAnimationDuration)
-                        );
-                      }, ACT2.acceptAllDelay)
-                    );
-                  }, 400)
+                    // In auto mode, accept after delay
+                    if (!waitForAccept) {
+                      timers.push(
+                        setTimeout(() => {
+                          setPhase("accepting");
+                          timers.push(
+                            setTimeout(() => {
+                              setPhase("clean");
+                              onCompleteRef.current?.();
+                            }, ACT2.resolveAnimationDuration)
+                          );
+                        }, ACT2.acceptAllDelay)
+                      );
+                    }
+                  }, 300)
                 );
               }
             }, i * ACT2.diffStaggerDelay)
@@ -80,7 +88,19 @@ export function DiffAnimation({ isActive, onComplete }: DiffAnimationProps) {
     );
 
     return () => timers.forEach(clearTimeout);
-  }, [isActive]);
+  }, [isActive, waitForAccept]);
+
+  // External accept trigger (from guided tour)
+  useEffect(() => {
+    if (acceptAll && phase === "showing-diffs") {
+      setPhase("accepting");
+      const timer = setTimeout(() => {
+        setPhase("clean");
+        onCompleteRef.current?.();
+      }, ACT2.resolveAnimationDuration);
+      return () => clearTimeout(timer);
+    }
+  }, [acceptAll, phase]);
 
   if (phase === "idle") {
     return <span className="diff-text">{ACT2.textWithErrors}</span>;
@@ -96,8 +116,7 @@ export function DiffAnimation({ isActive, onComplete }: DiffAnimationProps) {
           animate={{ opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 1.2, repeat: Infinity }}
         >
-          {" "}
-          Scanning for errors...
+          {" "}Scanning for errors...
         </m.span>
       </span>
     );
@@ -107,25 +126,12 @@ export function DiffAnimation({ isActive, onComplete }: DiffAnimationProps) {
     return <span className="diff-text">{ACT2.cleanText}</span>;
   }
 
-  // showing-diffs or accepting phase
+  // showing-diffs or accepting
   const isResolving = phase === "accepting";
 
   return (
     <span className="diff-text">
       {renderTextWithDiffs(visibleDiffs, isResolving)}
-      <AnimatePresence>
-        {showAcceptButton && (
-          <m.button
-            className="diff-accept-btn"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.3 }}
-          >
-            ✓ Accept All
-          </m.button>
-        )}
-      </AnimatePresence>
     </span>
   );
 }
@@ -134,9 +140,6 @@ function renderTextWithDiffs(
   visibleCount: number,
   isResolving: boolean
 ): React.ReactNode[] {
-  // We need to render the text with inline diffs at the right positions.
-  // For our simple 2-diff case, we do this by splitting the text at diff locations.
-
   const text: string = ACT2.textWithErrors;
   const nodes: React.ReactNode[] = [];
   let remaining: string = text;
@@ -150,7 +153,6 @@ function renderTextWithDiffs(
       const pos = remaining.indexOf(diff.original);
       if (pos === -1) continue;
 
-      // Text before the diff
       nodes.push(remaining.slice(0, pos));
 
       if (isVisible) {
@@ -159,9 +161,7 @@ function renderTextWithDiffs(
             key={`del-${diff.original}`}
             className="diff-deletion"
             initial={{ opacity: 0 }}
-            animate={{
-              opacity: isResolving ? 0 : 1,
-            }}
+            animate={{ opacity: isResolving ? 0 : 1 }}
             transition={{ duration: 0.3 }}
           >
             {diff.original}
@@ -172,9 +172,7 @@ function renderTextWithDiffs(
             key={`ins-${diff.corrected}`}
             className="diff-insertion"
             initial={{ opacity: 0 }}
-            animate={{
-              opacity: 1,
-            }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
             {diff.corrected}
@@ -189,7 +187,6 @@ function renderTextWithDiffs(
       const pos = remaining.indexOf(diff.before);
       if (pos === -1) continue;
 
-      // Text before the insertion point (including the "before" word)
       nodes.push(remaining.slice(0, pos + diff.before.length));
 
       if (isVisible) {
@@ -198,13 +195,10 @@ function renderTextWithDiffs(
             key={`ins-${diff.inserted}`}
             className="diff-insertion"
             initial={{ opacity: 0 }}
-            animate={{
-              opacity: 1,
-            }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
-            {" "}
-            {diff.inserted}
+            {" "}{diff.inserted}
           </m.span>
         );
       }
@@ -213,8 +207,6 @@ function renderTextWithDiffs(
     }
   }
 
-  // Remaining text
   nodes.push(remaining);
-
   return nodes;
 }

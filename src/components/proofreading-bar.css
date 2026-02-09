@@ -1,0 +1,86 @@
+/* ============================================================
+   Proofreading Bar — Matches real Inkstone proofreading toolbar
+   Fixed at bottom center of viewport
+   ============================================================ */
+
+.proofbar {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.proofbar__btn {
+  padding: 5px 12px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--duration-fast) ease;
+}
+
+.proofbar__btn--outline {
+  background: transparent;
+  border: 1px solid var(--border-primary);
+  color: var(--text-secondary);
+}
+
+.proofbar__btn--outline:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.proofbar__btn--primary {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: #0d0d11;
+}
+
+.proofbar__btn--primary:hover {
+  background: var(--accent-hover);
+}
+
+.proofbar__separator {
+  width: 1px;
+  height: 24px;
+  background: var(--border-primary);
+  margin: 0 6px;
+  flex-shrink: 0;
+}
+
+.proofbar__icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.proofbar__icon-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.proofbar__counter {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--text-muted);
+  min-width: 30px;
+  text-align: center;
+}

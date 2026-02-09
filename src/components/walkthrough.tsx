@@ -13,7 +13,7 @@ import { StepIndicator, type Act } from "./step-indicator";
 import { FakeSidebar } from "./fake-sidebar";
 import { FakeEditor } from "./fake-editor";
 import { FakeChatPanel } from "./fake-chat-panel";
-// BottomBar removed — theme toggle moved to editor header
+import { ProofreadingBar } from "./proofreading-bar";
 import { TourTooltip } from "./tour-tooltip";
 import { useResearchPhase } from "./research-insert";
 import type { Theme } from "./theme-listener";
@@ -48,6 +48,9 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [tourStep, setTourStep] = useState(0);
   const [tourActive, setTourActive] = useState(mode === "guided");
+  const [diffsVisible, setDiffsVisible] = useState(false);
+  const [acceptAllTriggered, setAcceptAllTriggered] = useState(false);
+  const [showProofBar, setShowProofBar] = useState(false);
 
   const currentStep = TOUR_STEPS[tourStep];
 
@@ -155,33 +158,59 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
     }
   }, [tourActive, tourStep, state, researchPhase, advanceTour]);
 
-  // --- GUIDED: advance after diff scanning completes ---
+  // --- GUIDED: advance from scanning when diffs are visible ---
   useEffect(() => {
     if (!tourActive) return;
     const step = TOUR_STEPS[tourStep];
-    if (step?.id === "scanning" && state === "act2") {
-      // The diff animation has its own internal scanning delay
-      // Advance after it shows diffs (scanningDelay + small buffer)
-      const t = setTimeout(advanceTour, 1600);
+    if (step?.id === "scanning" && diffsVisible) {
+      const t = setTimeout(advanceTour, 400);
       return () => clearTimeout(t);
     }
-  }, [tourActive, tourStep, state, advanceTour]);
+  }, [tourActive, tourStep, diffsVisible, advanceTour]);
 
   const handleChatTypingDone = useCallback(() => {
     setChatTypingDone(true);
   }, []);
 
+  // Diff callbacks
+  const handleDiffsVisible = useCallback(() => {
+    setDiffsVisible(true);
+    setShowProofBar(true);
+  }, []);
+
+  const handleAcceptAll = useCallback(() => {
+    setAcceptAllTriggered(true);
+    setShowProofBar(false);
+  }, []);
+
+  // Reset diff state when leaving act2
+  useEffect(() => {
+    if (state !== "act2") {
+      setDiffsVisible(false);
+      setAcceptAllTriggered(false);
+      setShowProofBar(false);
+    }
+  }, [state]);
+
   const handleReplay = useCallback(() => {
     setChatTypingDone(false);
     setSidebarOpen(false);
+    setDiffsVisible(false);
+    setAcceptAllTriggered(false);
+    setShowProofBar(false);
     setState("idle");
     setTourStep(0);
     setTourActive(true);
   }, []);
 
   const handleTourCtaClick = useCallback(() => {
+    const step = TOUR_STEPS[tourStep];
+    // "Accept All" step: trigger acceptance, then advance
+    if (step?.id === "see-diffs") {
+      handleAcceptAll();
+    }
     advanceTour();
-  }, [advanceTour]);
+  }, [tourStep, advanceTour, handleAcceptAll]);
 
   return (
     <div className="walkthrough" data-theme={theme}>
@@ -203,6 +232,9 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
             onActComplete={handleActComplete}
             theme={theme}
             onToggleTheme={onToggleTheme}
+            waitForAccept={mode === "guided"}
+            acceptAll={acceptAllTriggered}
+            onDiffsVisible={handleDiffsVisible}
           />
         </div>
         <div className="walkthrough__resizer" />
@@ -215,6 +247,14 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
           />
         </div>
       </div>
+
+      {/* Proofreading bar — appears when diffs are visible */}
+      <ProofreadingBar
+        visible={showProofBar}
+        currentIndex={0}
+        onAcceptAll={handleAcceptAll}
+        onClose={() => setShowProofBar(false)}
+      />
 
       {/* Guided tour tooltip */}
       {tourActive && currentStep && (

@@ -33,10 +33,13 @@ interface FakeEditorProps {
   onActComplete: (act: Act) => void;
   theme?: Theme;
   onToggleTheme?: () => void;
+  waitForAccept?: boolean;
+  acceptAll?: boolean;
+  onDiffsVisible?: () => void;
 }
 
 export const FakeEditor = forwardRef<HTMLDivElement, FakeEditorProps>(
-  function FakeEditor({ state, researchPhase = "idle", onActComplete, theme, onToggleTheme }, ref) {
+  function FakeEditor({ state, researchPhase = "idle", onActComplete, theme, onToggleTheme, waitForAccept, acceptAll, onDiffsVisible }, ref) {
     const isMorphing = state === "act1";
 
     return (
@@ -166,7 +169,7 @@ export const FakeEditor = forwardRef<HTMLDivElement, FakeEditorProps>(
               className={`fake-editor__paragraph ${isMorphing ? "fake-editor__paragraph--morphing" : ""}`}
               data-tour-target="editor-paragraph"
             >
-              {renderEditorContent(state, onActComplete)}
+              {renderEditorContent(state, onActComplete, waitForAccept, acceptAll, onDiffsVisible)}
             </p>
 
             <ResearchDocInsert phase={researchPhase} />
@@ -181,7 +184,10 @@ export const FakeEditor = forwardRef<HTMLDivElement, FakeEditorProps>(
 
 function renderEditorContent(
   state: WalkthroughState,
-  onActComplete: (act: Act) => void
+  onActComplete: (act: Act) => void,
+  waitForAccept?: boolean,
+  acceptAll?: boolean,
+  onDiffsVisible?: () => void,
 ): React.ReactNode {
   switch (state) {
     case "idle":
@@ -202,6 +208,9 @@ function renderEditorContent(
       return (
         <DiffAnimation
           isActive={true}
+          waitForAccept={waitForAccept}
+          acceptAll={acceptAll}
+          onDiffsVisible={onDiffsVisible}
           onComplete={() => onActComplete("proofread")}
         />
       );
