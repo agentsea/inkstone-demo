@@ -58,40 +58,11 @@
   cursor: default;
 }
 
-/* --- Toolbar Tabs Row (AI | STYLE | FORMAT | ...) --- */
-.fake-editor__toolbar-tabs {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  padding: 0 12px;
-  background: var(--bg-toolbar);
-  border-bottom: 1px solid var(--border-subtle);
-  flex-shrink: 0;
-}
-
-.fake-editor__tab {
-  padding: 6px 8px;
-  font-family: var(--font-sans);
-  font-size: 8px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: hsl(0, 0%, 50%);
-  cursor: default;
-  white-space: nowrap;
-  border-bottom: 2px solid transparent;
-}
-
-.fake-editor__tab--active {
-  color: var(--text-primary);
-  border-bottom-color: var(--accent);
-}
-
-/* --- Toolbar Icons Row — sections separated by left border --- */
+/* --- Toolbar: unified label + icons per section --- */
 .fake-editor__toolbar {
   display: flex;
-  align-items: center;
-  padding: 4px 12px;
+  align-items: stretch;
+  padding: 0 8px;
   background: var(--bg-toolbar);
   border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
@@ -101,15 +72,39 @@
 
 .fake-editor__toolbar-section {
   display: flex;
-  align-items: center;
-  gap: 1px;
-  padding: 0 6px;
+  flex-direction: column;
+  padding: 0;
   border-left: 1px solid var(--border-primary);
 }
 
 .fake-editor__toolbar-section:first-child {
   border-left: none;
-  padding-left: 0;
+}
+
+.fake-editor__toolbar-label {
+  font-family: var(--font-sans);
+  font-size: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: hsl(0, 0%, 50%);
+  padding: 4px 6px 0;
+  border-bottom: 2px solid transparent;
+  cursor: default;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.fake-editor__toolbar-label--active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent);
+}
+
+.fake-editor__toolbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 2px 4px 4px;
 }
 
 .fake-editor__toolbar-icon {

@@ -55,84 +55,94 @@ export const FakeEditor = forwardRef<HTMLDivElement, FakeEditorProps>(
           </div>
         </div>
 
-        {/* Toolbar row 1: section labels */}
-        <div className="fake-editor__toolbar-tabs">
-          <span className="fake-editor__tab fake-editor__tab--active">AI</span>
-          <span className="fake-editor__tab">STYLE</span>
-          <span className="fake-editor__tab">FORMAT</span>
-          <span className="fake-editor__tab">ALIGN</span>
-          <span className="fake-editor__tab">LISTS</span>
-          <span className="fake-editor__tab">HISTORY</span>
-          <span className="fake-editor__tab">PRINT</span>
-        </div>
-
-        {/* Toolbar row 2: icons per section */}
+        {/* Toolbar: label + icons per section, laid out horizontally */}
         <div className="fake-editor__toolbar">
           {/* AI section */}
           <div className="fake-editor__toolbar-section">
-            <button
-              className={`fake-editor__toolbar-icon ${state === "act2" ? "fake-editor__toolbar-icon--active" : ""}`}
-              data-tour-target="toolbar-proofread"
-              title="Proofread"
-            >
-              <Glasses size={16} />
-            </button>
-            <button className="fake-editor__toolbar-icon" title="Fact-check">
-              <BadgeCheck size={16} />
-            </button>
-            <button className="fake-editor__toolbar-icon" title="Deep Research">
-              <BookOpen size={16} />
-            </button>
-            <button className="fake-editor__toolbar-icon" title="Web Search">
-              <Globe size={16} />
-            </button>
+            <span className="fake-editor__toolbar-label fake-editor__toolbar-label--active">AI</span>
+            <div className="fake-editor__toolbar-icons">
+              <button
+                className={`fake-editor__toolbar-icon ${state === "act2" ? "fake-editor__toolbar-icon--active" : ""}`}
+                data-tour-target="toolbar-proofread"
+                title="Proofread"
+              >
+                <Glasses size={16} />
+              </button>
+              <button className="fake-editor__toolbar-icon" title="Fact-check">
+                <BadgeCheck size={16} />
+              </button>
+              <button className="fake-editor__toolbar-icon" title="Deep Research">
+                <BookOpen size={16} />
+              </button>
+              <button className="fake-editor__toolbar-icon" title="Web Search">
+                <Globe size={16} />
+              </button>
+            </div>
           </div>
 
           {/* STYLE section */}
           <div className="fake-editor__toolbar-section">
-            <span className="fake-editor__toolbar-dropdown">Heading 1</span>
+            <span className="fake-editor__toolbar-label">STYLE</span>
+            <div className="fake-editor__toolbar-icons">
+              <span className="fake-editor__toolbar-dropdown">Heading 1</span>
+            </div>
           </div>
 
           {/* FORMAT section */}
           <div className="fake-editor__toolbar-section">
-            <button className="fake-editor__toolbar-icon" title="Bold"><Bold size={16} /></button>
-            <button className="fake-editor__toolbar-icon" title="Italic"><Italic size={16} /></button>
-            <button className="fake-editor__toolbar-icon" title="Underline"><Underline size={16} /></button>
-            <button className="fake-editor__toolbar-icon" title="Strikethrough"><Strikethrough size={16} /></button>
-            <button className="fake-editor__toolbar-icon" title="Code"><Code size={16} /></button>
-            <button className="fake-editor__toolbar-icon" title="Link"><Link size={16} /></button>
-            <button className="fake-editor__toolbar-icon" title="Image"><Image size={16} /></button>
-            <button className="fake-editor__toolbar-icon" title="Table"><Table size={16} /></button>
-            <button className="fake-editor__toolbar-icon fake-editor__toolbar-icon--text-color" title="Text Color">
-              <span>A</span>
-            </button>
-            <button className="fake-editor__toolbar-icon" title="Find & Replace"><Search size={16} /></button>
+            <span className="fake-editor__toolbar-label">FORMAT</span>
+            <div className="fake-editor__toolbar-icons">
+              <button className="fake-editor__toolbar-icon" title="Bold"><Bold size={16} /></button>
+              <button className="fake-editor__toolbar-icon" title="Italic"><Italic size={16} /></button>
+              <button className="fake-editor__toolbar-icon" title="Underline"><Underline size={16} /></button>
+              <button className="fake-editor__toolbar-icon" title="Strikethrough"><Strikethrough size={16} /></button>
+              <button className="fake-editor__toolbar-icon" title="Code"><Code size={16} /></button>
+              <button className="fake-editor__toolbar-icon" title="Link"><Link size={16} /></button>
+              <button className="fake-editor__toolbar-icon" title="Image"><Image size={16} /></button>
+              <button className="fake-editor__toolbar-icon" title="Table"><Table size={16} /></button>
+              <button className="fake-editor__toolbar-icon fake-editor__toolbar-icon--text-color" title="Text Color">
+                <span>A</span>
+              </button>
+              <button className="fake-editor__toolbar-icon" title="Find & Replace"><Search size={16} /></button>
+            </div>
           </div>
 
           {/* ALIGN section */}
           <div className="fake-editor__toolbar-section">
-            <button className="fake-editor__toolbar-icon" title="Align Left"><AlignLeft size={16} /></button>
-            <button className="fake-editor__toolbar-icon" title="Align Center"><AlignCenter size={16} /></button>
-            <button className="fake-editor__toolbar-icon" title="Align Right"><AlignRight size={16} /></button>
-            <button className="fake-editor__toolbar-icon" title="Justify"><AlignJustify size={16} /></button>
+            <span className="fake-editor__toolbar-label">ALIGN</span>
+            <div className="fake-editor__toolbar-icons">
+              <button className="fake-editor__toolbar-icon" title="Align Left"><AlignLeft size={16} /></button>
+              <button className="fake-editor__toolbar-icon" title="Align Center"><AlignCenter size={16} /></button>
+              <button className="fake-editor__toolbar-icon" title="Align Right"><AlignRight size={16} /></button>
+              <button className="fake-editor__toolbar-icon" title="Justify"><AlignJustify size={16} /></button>
+            </div>
           </div>
 
           {/* LISTS section */}
           <div className="fake-editor__toolbar-section">
-            <button className="fake-editor__toolbar-icon" title="Bullet List"><List size={16} /></button>
-            <button className="fake-editor__toolbar-icon" title="Numbered List"><ListOrdered size={16} /></button>
-            <button className="fake-editor__toolbar-icon" title="Task List"><CheckSquare size={16} /></button>
+            <span className="fake-editor__toolbar-label">LISTS</span>
+            <div className="fake-editor__toolbar-icons">
+              <button className="fake-editor__toolbar-icon" title="Bullet List"><List size={16} /></button>
+              <button className="fake-editor__toolbar-icon" title="Numbered List"><ListOrdered size={16} /></button>
+              <button className="fake-editor__toolbar-icon" title="Task List"><CheckSquare size={16} /></button>
+            </div>
           </div>
 
           {/* HISTORY section */}
           <div className="fake-editor__toolbar-section">
-            <button className="fake-editor__toolbar-icon" title="Undo"><Undo size={16} /></button>
-            <button className="fake-editor__toolbar-icon" title="Redo"><Redo size={16} /></button>
+            <span className="fake-editor__toolbar-label">HISTORY</span>
+            <div className="fake-editor__toolbar-icons">
+              <button className="fake-editor__toolbar-icon" title="Undo"><Undo size={16} /></button>
+              <button className="fake-editor__toolbar-icon" title="Redo"><Redo size={16} /></button>
+            </div>
           </div>
 
           {/* PRINT section */}
           <div className="fake-editor__toolbar-section">
-            <button className="fake-editor__toolbar-icon" title="Print"><Printer size={16} /></button>
+            <span className="fake-editor__toolbar-label">PRINT</span>
+            <div className="fake-editor__toolbar-icons">
+              <button className="fake-editor__toolbar-icon" title="Print"><Printer size={16} /></button>
+            </div>
           </div>
         </div>
 
