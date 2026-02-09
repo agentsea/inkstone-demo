@@ -13,7 +13,7 @@ import { StepIndicator, type Act } from "./step-indicator";
 import { FakeSidebar } from "./fake-sidebar";
 import { FakeEditor } from "./fake-editor";
 import { FakeChatPanel } from "./fake-chat-panel";
-import { BottomBar } from "./bottom-bar";
+// BottomBar removed — theme toggle moved to editor header
 import { TourTooltip } from "./tour-tooltip";
 import { useResearchPhase } from "./research-insert";
 import type { Theme } from "./theme-listener";
@@ -201,6 +201,8 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
             state={state}
             researchPhase={researchPhase}
             onActComplete={handleActComplete}
+            theme={theme}
+            onToggleTheme={onToggleTheme}
           />
         </div>
         <div className="walkthrough__resizer" />
@@ -213,8 +215,6 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
           />
         </div>
       </div>
-
-      <BottomBar theme={theme} onToggleTheme={onToggleTheme} />
 
       {/* Guided tour tooltip */}
       {tourActive && currentStep && (

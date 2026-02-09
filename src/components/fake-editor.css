@@ -58,6 +58,16 @@
   cursor: default;
 }
 
+.fake-editor__theme-toggle {
+  cursor: pointer;
+  transition: color var(--duration-fast) ease;
+}
+
+.fake-editor__theme-toggle:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
 /* --- Toolbar: unified label + icons per section --- */
 .fake-editor__toolbar {
   display: flex;

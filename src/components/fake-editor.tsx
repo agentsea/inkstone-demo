@@ -14,7 +14,9 @@ import {
   Undo, Redo,
   Printer,
   History,
+  Sun, Moon,
 } from "lucide-react";
+import type { Theme } from "./theme-listener";
 import type { WalkthroughState } from "./walkthrough";
 import type { Act } from "./step-indicator";
 import type { ResearchPhase } from "./research-insert";
@@ -29,10 +31,12 @@ interface FakeEditorProps {
   state: WalkthroughState;
   researchPhase?: ResearchPhase;
   onActComplete: (act: Act) => void;
+  theme?: Theme;
+  onToggleTheme?: () => void;
 }
 
 export const FakeEditor = forwardRef<HTMLDivElement, FakeEditorProps>(
-  function FakeEditor({ state, researchPhase = "idle", onActComplete }, ref) {
+  function FakeEditor({ state, researchPhase = "idle", onActComplete, theme, onToggleTheme }, ref) {
     const isMorphing = state === "act1";
 
     return (
@@ -52,6 +56,15 @@ export const FakeEditor = forwardRef<HTMLDivElement, FakeEditorProps>(
               <BadgeCheck size={14} />
               <span>Claims</span>
             </button>
+            {onToggleTheme && (
+              <button
+                className="fake-editor__header-btn fake-editor__theme-toggle"
+                onClick={onToggleTheme}
+                title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+              >
+                {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
+              </button>
+            )}
           </div>
         </div>
 
