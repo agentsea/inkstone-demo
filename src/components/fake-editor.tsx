@@ -3,18 +3,30 @@
  *
  * Looks exactly like Inkstone's editor. Is actually just divs, spans, and CSS.
  * No TipTap. No ProseMirror. No contentEditable. Just styled HTML.
+ *
+ * Content is driven by the walkthrough state machine. Each act swaps in
+ * its own animation component (TextMorph, DiffAnimation, ResearchDocInsert).
  */
 
 import type { WalkthroughState } from "./walkthrough";
 import type { Act } from "./step-indicator";
+import type { ResearchPhase } from "./research-insert";
+import { TextMorph } from "./text-morph";
+import { DiffAnimation } from "./diff-animation";
+import { ResearchDocInsert } from "./research-insert";
+import { ACT1, ACT2 } from "../data/walkthrough-script";
 import "./fake-editor.css";
+import "./animations.css";
 
 interface FakeEditorProps {
   state: WalkthroughState;
+  researchPhase?: ResearchPhase;
   onActComplete: (act: Act) => void;
 }
 
-export function FakeEditor({ state }: FakeEditorProps) {
+export function FakeEditor({ state, researchPhase = "idle", onActComplete }: FakeEditorProps) {
+  const isMorphing = state === "act1";
+
   return (
     <div className="fake-editor">
       {/* Toolbar silhouette */}
@@ -40,10 +52,13 @@ export function FakeEditor({ state }: FakeEditorProps) {
       {/* Document content area */}
       <div className="fake-editor__content">
         <div className="fake-editor__page">
-          <p className="fake-editor__paragraph">
-            {/* Content will be driven by walkthrough state */}
-            {getEditorContent(state)}
+          <p className={`fake-editor__paragraph ${isMorphing ? "fake-editor__paragraph--morphing" : ""}`}>
+            {renderEditorContent(state, onActComplete)}
           </p>
+
+          {/* Research insert flows into doc during Act 3 */}
+          <ResearchDocInsert phase={researchPhase} />
+
           <span className="fake-editor__cursor" />
         </div>
       </div>
@@ -51,25 +66,47 @@ export function FakeEditor({ state }: FakeEditorProps) {
   );
 }
 
-/** Placeholder — will be replaced with animated components in Act implementations */
-function getEditorContent(state: WalkthroughState): string {
+function renderEditorContent(
+  state: WalkthroughState,
+  onActComplete: (act: Act) => void
+): React.ReactNode {
   switch (state) {
     case "idle":
+      return ACT1.roughDraft;
+
     case "act1":
-      return "Coffee has been drank by people for a really long time. It started in Africa somewhere and then got popular in Europe and now basically everyone drinks it. There's a lot of coffee companies now.";
+      return (
+        <TextMorph
+          from={ACT1.roughDraft}
+          to={ACT1.polishedDraft}
+          isActive={true}
+          duration={ACT1.morphDuration}
+          onComplete={() => onActComplete("rewrite")}
+        />
+      );
+
     case "act1-complete":
+      return ACT1.polishedDraft;
+
     case "act2":
+      return (
+        <DiffAnimation
+          isActive={true}
+          onComplete={() => onActComplete("proofread")}
+        />
+      );
+
     case "act2-complete":
     case "act3":
     case "act3-complete":
-      return "From its origins in the Ethiopian highlands, coffee has journeyed across continents to become the world's most traded commodity after oil. Today, over 2.25 billion cups are consumed daily \u2014 a testament to the humble bean's extraordinary cultural grip.";
+      return ACT2.cleanText;
+
     default:
       return "";
   }
 }
 
 function ToolbarIcon({ icon }: { icon: string }) {
-  // Simple SVG icon silhouettes matching editor toolbar
   const icons: Record<string, string> = {
     bold: "B",
     italic: "I",

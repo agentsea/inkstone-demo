@@ -7,11 +7,13 @@
  * No TipTap, no ProseMirror, no real editor. Just styled divs and Framer Motion.
  */
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { StepIndicator, type Act } from "./step-indicator";
 import { FakeEditor } from "./fake-editor";
 import { FakeChatPanel } from "./fake-chat-panel";
+import { useResearchPhase } from "./research-insert";
 import type { Theme } from "./theme-listener";
+import { TIMING } from "../data/walkthrough-script";
 import "./walkthrough.css";
 
 export type WalkthroughState =
@@ -29,6 +31,13 @@ interface WalkthroughProps {
 
 export function Walkthrough({ theme }: WalkthroughProps) {
   const [state, setState] = useState<WalkthroughState>("idle");
+  const [chatTypingDone, setChatTypingDone] = useState(false);
+
+  // Research phase drives both chat response and doc insert
+  const researchPhase = useResearchPhase(
+    state === "act3" && chatTypingDone,
+    () => handleActComplete("research")
+  );
 
   const currentAct: Act =
     state === "act2" || state === "act2-complete"
@@ -38,6 +47,7 @@ export function Walkthrough({ theme }: WalkthroughProps) {
         : "rewrite";
 
   const handleActSelect = useCallback((act: Act) => {
+    setChatTypingDone(false);
     switch (act) {
       case "rewrite":
         setState("act1");
@@ -65,17 +75,41 @@ export function Walkthrough({ theme }: WalkthroughProps) {
     }
   }, []);
 
+  // Auto-advance between acts
+  useEffect(() => {
+    if (state === "act1-complete") {
+      const timer = setTimeout(() => {
+        setChatTypingDone(false);
+        setState("act2");
+      }, TIMING.interActDelay);
+      return () => clearTimeout(timer);
+    }
+    if (state === "act2-complete") {
+      const timer = setTimeout(() => {
+        setChatTypingDone(false);
+        setState("act3");
+      }, TIMING.interActDelay);
+      return () => clearTimeout(timer);
+    }
+  }, [state]);
+
   const handleReplay = useCallback(() => {
+    setChatTypingDone(false);
     setState("idle");
-    // Brief delay then auto-start
     setTimeout(() => setState("act1"), 300);
   }, []);
 
   // Auto-start on first render
-  if (state === "idle") {
-    // Use microtask to avoid setState during render
-    queueMicrotask(() => setState("act1"));
-  }
+  useEffect(() => {
+    if (state === "idle") {
+      const timer = setTimeout(() => setState("act1"), 500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleChatTypingDone = useCallback(() => {
+    setChatTypingDone(true);
+  }, []);
 
   return (
     <div className="walkthrough" data-theme={theme}>
@@ -88,13 +122,16 @@ export function Walkthrough({ theme }: WalkthroughProps) {
         <div className="walkthrough__editor">
           <FakeEditor
             state={state}
+            researchPhase={researchPhase}
             onActComplete={handleActComplete}
           />
         </div>
         <div className="walkthrough__chat">
           <FakeChatPanel
             state={state}
+            researchPhase={researchPhase}
             onActComplete={handleActComplete}
+            onChatTypingDone={handleChatTypingDone}
           />
         </div>
       </div>
