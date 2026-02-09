@@ -1,0 +1,44 @@
+/* ============================================================
+   Bottom Bar — Status bar with theme toggle
+   ============================================================ */
+
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 12px;
+  background: var(--bg-toolbar);
+  border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  height: 32px;
+}
+
+.bottom-bar__left,
+.bottom-bar__right {
+  flex: 1;
+}
+
+.bottom-bar__center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bottom-bar__theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+}
+
+.bottom-bar__theme-toggle:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}

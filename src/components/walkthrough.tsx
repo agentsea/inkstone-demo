@@ -13,6 +13,7 @@ import { StepIndicator, type Act } from "./step-indicator";
 import { FakeSidebar } from "./fake-sidebar";
 import { FakeEditor } from "./fake-editor";
 import { FakeChatPanel } from "./fake-chat-panel";
+import { BottomBar } from "./bottom-bar";
 import { TourTooltip } from "./tour-tooltip";
 import { useResearchPhase } from "./research-insert";
 import type { Theme } from "./theme-listener";
@@ -32,6 +33,7 @@ type Mode = "guided" | "auto";
 
 interface WalkthroughProps {
   theme: Theme;
+  onToggleTheme: () => void;
 }
 
 function getMode(): Mode {
@@ -39,7 +41,7 @@ function getMode(): Mode {
   return params.get("mode") === "auto" ? "auto" : "guided";
 }
 
-export function Walkthrough({ theme }: WalkthroughProps) {
+export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
   const mode = getMode();
   const [state, setState] = useState<WalkthroughState>("idle");
   const [chatTypingDone, setChatTypingDone] = useState(false);
@@ -230,6 +232,8 @@ export function Walkthrough({ theme }: WalkthroughProps) {
           />
         </div>
       </div>
+
+      <BottomBar theme={theme} onToggleTheme={onToggleTheme} />
 
       {/* Guided tour tooltip */}
       {tourActive && currentStep && (
