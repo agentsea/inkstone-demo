@@ -1,33 +1,51 @@
 /* ============================================================
-   Tour Tooltip + Spotlight
+   Tour Tooltip — Portal-rendered, no clip-path artifacts
    ============================================================ */
 
-.tour-spotlight {
+/* Dim overlay — covers everything */
+.tour-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 90;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 9000;
   pointer-events: none;
 }
 
+/* Highlight ring around target element */
+.tour-highlight {
+  position: fixed;
+  z-index: 9001;
+  pointer-events: none;
+  border: 2px solid var(--accent, #8ab4f8);
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 4000px rgba(0, 0, 0, 0.45),
+    0 0 20px rgba(138, 180, 248, 0.3);
+  background: transparent;
+}
+
+/* Tooltip card */
 .tour-tooltip {
-  z-index: 100;
-  max-width: 320px;
-  min-width: 200px;
+  position: fixed;
+  z-index: 9002;
+  max-width: 340px;
+  min-width: 220px;
   padding: 16px 20px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-strong, var(--border-primary));
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg), 0 0 40px rgba(138, 180, 248, 0.08);
+  background: var(--bg-card, #252630);
+  border: 1px solid var(--border-strong, rgba(255, 255, 255, 0.18));
+  border-radius: 12px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
   pointer-events: auto;
 }
 
 .tour-tooltip__text {
-  font-family: var(--font-sans);
+  font-family: var(--font-sans, system-ui);
   font-size: 14px;
   line-height: 1.6;
-  color: var(--text-primary);
-  margin: 0 0 12px;
+  color: var(--text-primary, #f8fafc);
+  margin: 0 0 14px;
   white-space: pre-line;
 }
 
@@ -40,40 +58,41 @@
 .tour-tooltip__cta {
   display: inline-flex;
   align-items: center;
-  padding: 8px 18px;
-  background: var(--accent);
-  color: #fff;
+  padding: 8px 20px;
+  background: var(--accent, #8ab4f8);
+  color: #0d0d11;
   border: none;
-  border-radius: var(--radius-md);
-  font-family: var(--font-sans);
+  border-radius: 8px;
+  font-family: var(--font-sans, system-ui);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background var(--duration-fast) ease;
+  transition: background 0.15s ease;
   text-decoration: none;
 }
 
 .tour-tooltip__cta:hover {
-  background: var(--accent-hover);
+  background: var(--accent-hover, #6d9ce0);
 }
 
 .tour-tooltip__cta--link {
   text-decoration: none;
+  color: #0d0d11;
 }
 
 .tour-tooltip__replay {
   padding: 8px 14px;
   background: transparent;
-  color: var(--text-muted);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-md);
-  font-family: var(--font-sans);
+  color: var(--text-muted, #9da4b8);
+  border: 1px solid var(--border-primary, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+  font-family: var(--font-sans, system-ui);
   font-size: 13px;
   cursor: pointer;
-  transition: all var(--duration-fast) ease;
+  transition: all 0.15s ease;
 }
 
 .tour-tooltip__replay:hover {
-  background: var(--bg-hover);
-  color: var(--text-secondary);
+  background: var(--bg-hover, rgba(138, 180, 248, 0.12));
+  color: var(--text-secondary, #e3e6f3);
 }
