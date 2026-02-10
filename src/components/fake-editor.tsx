@@ -36,10 +36,11 @@ interface FakeEditorProps {
   waitForAccept?: boolean;
   acceptAll?: boolean;
   onDiffsVisible?: () => void;
+  showRewriteDiffs?: boolean;
 }
 
 export const FakeEditor = forwardRef<HTMLDivElement, FakeEditorProps>(
-  function FakeEditor({ state, researchPhase = "idle", onActComplete, theme, onToggleTheme, waitForAccept, acceptAll, onDiffsVisible }, ref) {
+  function FakeEditor({ state, researchPhase = "idle", onActComplete, theme, onToggleTheme, waitForAccept, acceptAll, onDiffsVisible, showRewriteDiffs }, ref) {
     const isMorphing = state === "act1";
 
     return (
@@ -169,7 +170,7 @@ export const FakeEditor = forwardRef<HTMLDivElement, FakeEditorProps>(
               className={`fake-editor__paragraph ${isMorphing ? "fake-editor__paragraph--morphing" : ""}`}
               data-tour-target="editor-paragraph"
             >
-              {renderEditorContent(state, onActComplete, waitForAccept, acceptAll, onDiffsVisible)}
+              {renderEditorContent(state, onActComplete, waitForAccept, acceptAll, onDiffsVisible, showRewriteDiffs)}
             </p>
 
             <ResearchDocInsert phase={researchPhase} />
@@ -188,6 +189,7 @@ function renderEditorContent(
   waitForAccept?: boolean,
   acceptAll?: boolean,
   onDiffsVisible?: () => void,
+  showRewriteDiffs?: boolean,
 ): React.ReactNode {
   switch (state) {
     case "idle":
@@ -203,6 +205,10 @@ function renderEditorContent(
         />
       );
     case "act1-complete":
+      // Show rewrite result as diffs if enabled (Step 4)
+      if (showRewriteDiffs) {
+        return <RewriteDiffView />;
+      }
       return ACT1.polishedDraft;
     case "act2":
       return (
@@ -221,4 +227,19 @@ function renderEditorContent(
     default:
       return "";
   }
+}
+
+/** Shows the rough→polished rewrite as inline red/green diffs */
+function RewriteDiffView() {
+  // Key phrases that changed — show a few representative diffs
+  // from the rough draft to polished version
+  return (
+    <span className="diff-text">
+      <span className="diff-deletion">AI is like the difference between an IKEA table and a handmade one. Before IKEA you had to make tables by hand or pay a lot. After IKEA everyone gets a table. Not amazing but functional.</span>
+      <span className="diff-insertion">When it comes to writing and AI, think about it like a hand-crafted table versus an IKEA table. Before IKEA, every table was handcrafted and that meant only a small number of people could afford them. After IKEA everyone can have a good, solid table. Maybe not a craftsman level table, but a table that works and does what a table should do.</span>
+      {" "}But{" "}
+      <span className="diff-deletion">the craftsman tables didn{"\u2019"}t go away. We just ended up with more tables everywhere. Kitchen table, dining room, side tables, office desk. That{"\u2019"}s called Jevons Paradox I think. When something gets cheap we want more of it not less.</span>
+      <span className="diff-insertion">IKEA didn{"\u2019"}t make the craftsman tables disappear. We just got more tables. That{"\u2019"}s Jevons Paradox in action. Once something gets cheaper and more ubiquitous, we want more of it.</span>
+    </span>
+  );
 }

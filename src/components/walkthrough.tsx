@@ -51,6 +51,7 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
   const [diffsVisible, setDiffsVisible] = useState(false);
   const [acceptAllTriggered, setAcceptAllTriggered] = useState(false);
   const [showProofBar, setShowProofBar] = useState(false);
+  const [showRewriteDiffs, setShowRewriteDiffs] = useState(false);
 
   const currentStep = TOUR_STEPS[tourStep];
 
@@ -183,11 +184,28 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
     setShowProofBar(false);
   }, []);
 
-  // Reset diff state when leaving act2
+  // Show rewrite diffs + proofreading bar when rewrite completes (Step 4)
   useEffect(() => {
-    if (state !== "act2") {
+    if (tourActive && state === "act1-complete") {
+      const step = TOUR_STEPS[tourStep];
+      if (step?.id === "rewrite-done") {
+        setShowRewriteDiffs(true);
+        setShowProofBar(true);
+      }
+    }
+  }, [tourActive, tourStep, state]);
+
+  // Reset diff state based on current act
+  useEffect(() => {
+    const s = state as string;
+    if (s === "act2") {
+      setShowRewriteDiffs(false);
+    }
+    if (s !== "act2" && s !== "act1-complete") {
       setDiffsVisible(false);
       setAcceptAllTriggered(false);
+    }
+    if (s !== "act2" && s !== "act1-complete") {
       setShowProofBar(false);
     }
   }, [state]);
@@ -198,6 +216,7 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
     setDiffsVisible(false);
     setAcceptAllTriggered(false);
     setShowProofBar(false);
+    setShowRewriteDiffs(false);
     setState("idle");
     setTourStep(0);
     setTourActive(true);
@@ -205,10 +224,18 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
 
   const handleTourCtaClick = useCallback(() => {
     const step = TOUR_STEPS[tourStep];
-    // "Accept All" step: trigger acceptance, then advance
+
+    // Step 4 "rewrite-done": dismiss rewrite diffs and bar
+    if (step?.id === "rewrite-done") {
+      setShowRewriteDiffs(false);
+      setShowProofBar(false);
+    }
+
+    // Step 7 "see-diffs": trigger acceptance
     if (step?.id === "see-diffs") {
       handleAcceptAll();
     }
+
     advanceTour();
   }, [tourStep, advanceTour, handleAcceptAll]);
 
@@ -235,6 +262,7 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
             waitForAccept={mode === "guided"}
             acceptAll={acceptAllTriggered}
             onDiffsVisible={handleDiffsVisible}
+            showRewriteDiffs={showRewriteDiffs}
           />
         </div>
         <div className="walkthrough__resizer" />
