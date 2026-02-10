@@ -13,14 +13,12 @@
 // ============================================================
 
 export const DOC = {
-  /** Document title shown in the title bar */
   title: "The Craftsman Table and the IKEA Desk",
-  /** Project name shown below title */
   project: "Substack Articles",
 } as const;
 
 // ============================================================
-// SIDEBAR — Project tree shown when sidebar opens at Step 13
+// SIDEBAR — Project tree shown when sidebar opens
 // ============================================================
 
 export const SIDEBAR = {
@@ -36,42 +34,33 @@ export const SIDEBAR = {
 
 // ============================================================
 // ACT 1: "The Rewrite"
-// Rough notes about the IKEA/craftsman metaphor → polished prose
 // ============================================================
 
 export const ACT1 = {
-  /** Rough notes — how a writer actually drafts */
   roughDraft:
     "AI is like the difference between an IKEA table and a handmade one. Before IKEA you had to make tables by hand or pay a lot. After IKEA everyone gets a table. Not amazing but functional. But the craftsman tables didn\u2019t go away. We just ended up with more tables everywhere. Kitchen table, dining room, side tables, office desk. That\u2019s called Jevons Paradox I think. When something gets cheap we want more of it not less.",
 
-  /** Polished version — from the published article */
   polishedDraft:
     "When it comes to writing and AI, think about it like a hand-crafted table versus an IKEA table. Before IKEA, every table was handcrafted and that meant only a small number of people could afford them. After IKEA everyone can have a good, solid table. Maybe not a craftsman level table, but a table that works and does what a table should do. But IKEA didn\u2019t make the craftsman tables disappear. We just got more tables. That\u2019s Jevons Paradox in action. Once something gets cheaper and more ubiquitous, we want more of it.",
 
-  /** Chat message that triggers the rewrite */
-  chatPrompt: "Tighten this up and make it flow better. Keep my voice.",
+  chatPrompt: "Tighten this up and make it flow better. Give it more power and punch. Keep my voice.",
 
-  /** Timing */
-  typingSpeed: 50, // ms per character for chat message
-  thinkingDelay: 800, // ms "thinking" shimmer before morph
-  morphDuration: 2500, // ms for the text morph animation
+  typingSpeed: 50,
+  thinkingDelay: 800,
+  morphDuration: 2500,
 } as const;
 
 // ============================================================
 // ACT 2: "The Proofread"
-// The polished draft has a typo and a missing word
 // ============================================================
 
 export const ACT2 = {
-  /** Text with deliberate errors */
   textWithErrors:
     "When it comes to writing and AI, think about it like a hand-crafted table versus an IKEA table. Before IKEA, every table was handcrafed and that meant only a small number of people could them. After IKEA everyone can have a good, solid table. Maybe not a craftsman level table, but a table that works and does what a table should do. But IKEA didn\u2019t make the craftsman tables disappear. We just got more tables. That\u2019s Jevons Paradox in action. Once something gets cheaper and more ubiquitous, we want more of it.",
 
-  /** Clean text after all diffs are accepted */
   cleanText:
     "When it comes to writing and AI, think about it like a hand-crafted table versus an IKEA table. Before IKEA, every table was handcrafted and that meant only a small number of people could afford them. After IKEA everyone can have a good, solid table. Maybe not a craftsman level table, but a table that works and does what a table should do. But IKEA didn\u2019t make the craftsman tables disappear. We just got more tables. That\u2019s Jevons Paradox in action. Once something gets cheaper and more ubiquitous, we want more of it.",
 
-  /** Individual diffs to animate */
   diffs: [
     {
       type: "replace" as const,
@@ -88,7 +77,9 @@ export const ACT2 = {
     },
   ],
 
-  /** Timing */
+  /** Scanning output text shown in AI chat panel */
+  scanningOutput: "vanquishing typos...fixing spacing...correcting grammar...",
+
   scanningDelay: 1200,
   diffStaggerDelay: 400,
   acceptAllDelay: 1500,
@@ -97,37 +88,20 @@ export const ACT2 = {
 
 // ============================================================
 // ACT 3: "The Research"
-// Look up Jevons Paradox — a fact referenced in the article
 // ============================================================
 
 export const ACT3 = {
-  /** User's research query */
   chatPrompt: "What is Jevons Paradox and who first described it?",
 
-  /** AI's synthesized response with inline citations */
   researchResponse:
     "Jevons Paradox was first described by English economist William Stanley Jevons in his 1865 book The Coal Question [1]. He observed that as coal use became more efficient, total consumption increased rather than decreased [2]. The principle has since been applied broadly \u2014 when a resource becomes cheaper or more efficient to use, total consumption often rises because demand grows faster than efficiency gains [3].",
 
-  /** Citation sources */
   citations: [
-    {
-      id: 1,
-      title: "Jevons, W.S. \u2014 The Coal Question (1865)",
-      url: "#",
-    },
-    {
-      id: 2,
-      title: "Alcott, B. \u2014 Jevons\u2019 Paradox, Ecological Economics (2005)",
-      url: "#",
-    },
-    {
-      id: 3,
-      title: "Sorrell, S. \u2014 The Rebound Effect, UK Energy Research Centre",
-      url: "#",
-    },
+    { id: 1, title: "Jevons, W.S. \u2014 The Coal Question (1865)", url: "#" },
+    { id: 2, title: "Alcott, B. \u2014 Jevons\u2019 Paradox, Ecological Economics (2005)", url: "#" },
+    { id: 3, title: "Sorrell, S. \u2014 The Rebound Effect, UK Energy Research Centre", url: "#" },
   ],
 
-  /** Timing */
   typingSpeed: 45,
   loadingShimmerDuration: 1800,
   responseTypingSpeed: 20,
@@ -136,45 +110,29 @@ export const ACT3 = {
 } as const;
 
 // ============================================================
-// GUIDED TOUR STEPS
+// GUIDED TOUR — 12 STEPS
 // ============================================================
 
-/**
- * GUIDED TOUR STEPS
- *
- * Each tooltip hits one of the emotional themes proven to convert
- * from X ad performance data:
- * - Co-creativity and partnership (top performer: 1.53%)
- * - User agency / "you're the boss"
- * - Offloading tedium
- * - No more 50 tabs / one place
- * - Magic / delight
- * - Nothing gets lost
- */
-
 export const TOUR_STEPS = [
+  // --- Step 1: INTRO (yellow card, pulsing) ---
   {
     id: "intro",
     target: "editor-area",
-    text: "You write. Your AI buddy handles the research, editing, fact-checking, and proofreading. Let\u2019s see how it works.",
+    text: "Inkstone is a co-creative writing app where you\u2019re in charge.\n\nYou write. Your AI buddy handles the research, editing, fact-checking, and proofreading.\n\nClick me to see how it works!",
     cta: "Start \u2192",
     position: "center" as const,
+    style: "yellow" as const, // special yellow card
   },
-  {
-    id: "rough-draft",
-    target: "editor-paragraph",
-    text: "Every great piece starts rough. Notes, half-baked ideas, fragments. That\u2019s fine \u2014 you\u2019re the idea machine.",
-    cta: "Next \u2192",
-    position: "bottom" as const,
-  },
+  // --- Step 2: ASK REWRITE ---
   {
     id: "ask-rewrite",
     target: "chat-input",
-    text: "Just talk to your AI buddy. It\u2019s not replacing you \u2014 it\u2019s helping you skip a draft or two.",
+    text: "When you need a hand, just talk to your AI buddy. It\u2019s never about replacing you \u2014 it\u2019s helping you brainstorm and iterate, skip a draft or two.",
     cta: "Rewrite \u2192",
     position: "left" as const,
     triggersAct: "act1" as const,
   },
+  // --- Step 3: WATCH MORPH ---
   {
     id: "watch-morph",
     target: "editor-paragraph",
@@ -182,28 +140,32 @@ export const TOUR_STEPS = [
     position: "top" as const,
     autoAdvance: true,
   },
+  // --- Step 4: REWRITE DONE ---
   {
     id: "rewrite-done",
     target: "editor-paragraph",
-    text: "Rough notes \u2192 polished prose. No copy-pasting between apps. No switching tabs.",
+    text: "Rough notes \u2192 polished prose. No copy-pasting between apps. No switching tabs. Accept or reject one by one or all at once.",
     cta: "Next: Proofreading \u2192",
     position: "bottom" as const,
   },
+  // --- Step 5: PROOFREAD ---
   {
     id: "click-proofread",
     target: "toolbar-proofread",
-    text: "Now hand off the tedious stuff. One click and your AI proofreader gets to work.",
+    text: "How about proofreading? Inkstone goes way beyond a spelling and grammar checker. Fixes missing words, corrects major errors, reformats, fixes spacing, and also catches all those basic spelling and grammar errors too.",
     cta: "Proofread \u2192",
     position: "bottom" as const,
     triggersAct: "act2" as const,
   },
+  // --- Step 6: SCANNING ---
   {
     id: "scanning",
-    target: "editor-paragraph",
-    text: "Your AI team is scanning the document...",
-    position: "top" as const,
+    target: "chat-messages",
+    text: "Your AI buddy is scanning your document...",
+    position: "left" as const,
     autoAdvance: true,
   },
+  // --- Step 7: SEE DIFFS ---
   {
     id: "see-diffs",
     target: "editor-paragraph",
@@ -211,21 +173,16 @@ export const TOUR_STEPS = [
     cta: "Accept All \u2192",
     position: "bottom" as const,
   },
-  {
-    id: "diffs-resolved",
-    target: "editor-paragraph",
-    text: "All fixed. One click. That\u2019s your proofreader, fact-checker, and editor on call 24/7.",
-    cta: "Next: Research \u2192",
-    position: "bottom" as const,
-  },
+  // --- Step 8: ASK RESEARCH ---
   {
     id: "ask-research",
     target: "chat-input",
-    text: "Need to look something up? No more opening 20 tabs. Just ask.",
+    text: "Need to look something up? No more opening 20 tabs. Do GPT Deep Research or Perplexity-like Web Search, right in the app. Just ask.",
     cta: "Search \u2192",
     position: "left" as const,
     triggersAct: "act3" as const,
   },
+  // --- Step 9: SEARCHING ---
   {
     id: "searching",
     target: "chat-messages",
@@ -233,6 +190,7 @@ export const TOUR_STEPS = [
     position: "left" as const,
     autoAdvance: true,
   },
+  // --- Step 10: INSERT TO DOC ---
   {
     id: "insert-to-doc",
     target: "chat-insert-btn",
@@ -240,6 +198,7 @@ export const TOUR_STEPS = [
     cta: "Insert to Doc \u2192",
     position: "left" as const,
   },
+  // --- Step 11: SIDEBAR REVEAL ---
   {
     id: "sidebar-reveal",
     target: "sidebar",
@@ -247,6 +206,7 @@ export const TOUR_STEPS = [
     position: "right" as const,
     opensSidebar: true,
   },
+  // --- Step 12: FINALE ---
   {
     id: "finale",
     target: "center",
@@ -263,8 +223,6 @@ export const TOUR_STEPS = [
 // ============================================================
 
 export const TIMING = {
-  /** Delay between acts when auto-playing */
   interActDelay: 1000,
-  /** How long the complete walkthrough takes (~30-45s guided) */
-  estimatedTotalDuration: 40_000,
+  estimatedTotalDuration: 35_000,
 } as const;

@@ -266,13 +266,15 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
           target={currentStep.target}
           position={currentStep.position}
           visible={true}
+          cardStyle={"style" in currentStep && currentStep.style === "yellow" ? "yellow" : "default"}
           noOverlay={
             currentStep.id === "watch-morph" ||
             currentStep.id === "scanning" ||
             currentStep.id === "see-diffs" ||
             currentStep.id === "searching" ||
             currentStep.id === "insert-to-doc" ||
-            currentStep.id === "sidebar-reveal"
+            currentStep.id === "sidebar-reveal" ||
+            currentStep.id === "rewrite-done"
           }
           onCtaClick={handleTourCtaClick}
           onReplay={handleReplay}

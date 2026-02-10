@@ -19,7 +19,8 @@ interface TourTooltipProps {
   target: string;
   position: "top" | "bottom" | "left" | "right" | "center";
   visible: boolean;
-  noOverlay?: boolean; // Don't dim — let user see the content (diffs, morph, etc.)
+  noOverlay?: boolean;
+  cardStyle?: "default" | "yellow";
   onCtaClick?: () => void;
   onReplay?: () => void;
 }
@@ -33,6 +34,7 @@ export function TourTooltip({
   position,
   visible,
   noOverlay = false,
+  cardStyle = "default",
   onCtaClick,
   onReplay,
 }: TourTooltipProps) {
@@ -154,7 +156,7 @@ export function TourTooltip({
           {/* Tooltip */}
           <m.div
             ref={tooltipRef}
-            className="tour-tooltip"
+            className={`tour-tooltip ${cardStyle === "yellow" ? "tour-tooltip--yellow" : ""}`}
             style={tooltipStyle}
             initial={{ opacity: 0, y: 8, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
