@@ -212,6 +212,16 @@
   font-size: 14px;
   display: flex;
   align-items: flex-start;
+  transition: border-color 0.2s ease;
+}
+
+.fake-chat__input--active {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.fake-chat__input-placeholder {
+  color: var(--text-muted);
 }
 
 .fake-chat__send-btn {
