@@ -24,20 +24,32 @@
   background: transparent;
 }
 
-/* Tooltip card */
+/* Tooltip card — blue-tinted with left accent border */
 .tour-tooltip {
   position: fixed;
   z-index: 9002;
   max-width: 360px;
   min-width: 240px;
   padding: 18px 22px;
-  background: var(--bg-card, #252630);
-  border: 1px solid var(--border-strong, rgba(255, 255, 255, 0.18));
-  border-radius: 12px;
+  background: rgba(138, 180, 248, 0.06);
+  border: 1px solid rgba(138, 180, 248, 0.2);
+  border-left: 3px solid var(--accent, #8ab4f8);
+  border-radius: 4px 12px 12px 4px;
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
+    0 0 20px rgba(138, 180, 248, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   pointer-events: auto;
+}
+
+[data-theme="light"] .tour-tooltip:not(.tour-tooltip--yellow) {
+  background: rgba(91, 106, 191, 0.06);
+  border-color: rgba(91, 106, 191, 0.2);
+  border-left-color: var(--accent, #5b6abf);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 0 20px rgba(91, 106, 191, 0.06);
 }
 
 /* Yellow intro card */
