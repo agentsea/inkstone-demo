@@ -252,7 +252,7 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
           onToggle={() => setSidebarOpen(!sidebarOpen)}
         />
         <div className="walkthrough__resizer" />
-        <div className="walkthrough__editor">
+        <div className="walkthrough__editor" style={{ position: "relative" }}>
           <FakeEditor
             state={state}
             researchPhase={researchPhase}
@@ -265,6 +265,22 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
             showRewriteDiffs={showRewriteDiffs}
             chatTypingDone={chatTypingDone}
           />
+          {/* Proofreading bar — inside editor div for centering */}
+          <ProofreadingBar
+            visible={showProofBar}
+            currentIndex={0}
+            onAcceptAll={() => {
+              handleAcceptAll();
+              if (tourActive) {
+                const step = TOUR_STEPS[tourStep];
+                if (step?.id === "rewrite-done" || step?.id === "see-diffs") {
+                  setShowRewriteDiffs(false);
+                  advanceTour();
+                }
+              }
+            }}
+            onClose={() => setShowProofBar(false)}
+          />
         </div>
         <div className="walkthrough__resizer" />
         <div className="walkthrough__chat">
@@ -276,25 +292,6 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
           />
         </div>
       </div>
-
-      {/* Proofreading bar — appears when diffs are visible */}
-      <ProofreadingBar
-        visible={showProofBar}
-        currentIndex={0}
-        onAcceptAll={() => {
-          // Accept diffs
-          handleAcceptAll();
-          // Also advance the tour if we're on a relevant step
-          if (tourActive) {
-            const step = TOUR_STEPS[tourStep];
-            if (step?.id === "rewrite-done" || step?.id === "see-diffs") {
-              setShowRewriteDiffs(false);
-              advanceTour();
-            }
-          }
-        }}
-        onClose={() => setShowProofBar(false)}
-      />
 
       {/* Guided tour tooltip */}
       {tourActive && currentStep && (

@@ -56,32 +56,45 @@
   font-style: italic;
 }
 
+/* Matches real Inkstone proofreading styles from editor.css */
 .diff-deletion {
   display: inline;
-  background: var(--diff-delete-bg);
-  color: var(--diff-delete-text);
+  background: #fef2f2;
+  color: #b91c1c;
   text-decoration: line-through;
-  padding: 1px 2px;
+  text-decoration-color: rgb(185 28 28);
+  text-decoration-thickness: 1.5px;
+  padding: 1px 0;
   border-radius: 2px;
   margin-right: 2px;
-  transition: opacity 0.3s ease;
+  box-shadow: 0 0 0 1px rgb(185 28 28 / 0.3);
+  transition: opacity 0.3s ease, background-color 0.2s, color 0.2s;
+}
+
+[data-theme="dark"] .diff-deletion {
+  background: rgb(127 29 29 / 0.3);
+  color: #fecaca;
+  text-decoration-color: #f87171;
+  box-shadow: 0 0 0 1px rgb(248 113 113 / 0.3);
 }
 
 .diff-deletion--resolved {
   opacity: 0;
-  width: 0;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
+  display: none;
 }
 
 .diff-insertion {
   display: inline;
-  background: var(--diff-insert-bg);
-  color: var(--diff-insert-text);
-  padding: 1px 2px;
-  border-radius: 2px;
-  transition: background 0.3s ease, color 0.3s ease;
+  background: #dcfce7;
+  color: #15803d;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+[data-theme="dark"] .diff-insertion {
+  background: rgb(20 83 45 / 0.3);
+  color: #bbf7d0;
 }
 
 .diff-accept-btn {

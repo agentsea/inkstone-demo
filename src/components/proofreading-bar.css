@@ -1,16 +1,20 @@
 /* ============================================================
    Proofreading Bar — Matches real Inkstone proofreading toolbar
-   Fixed at bottom center of viewport
+   Centered within the editor panel area
    ============================================================ */
 
-.proofbar {
-  position: fixed;
+.proofbar-wrapper {
+  position: absolute;
   bottom: 32px;
-  /* Center on the editor panel, not the full viewport.
-     Sidebar is ~44px, chat panel is ~380px + resizers ~4px */
-  left: calc(44px + (100vw - 44px - 380px - 4px) / 2);
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
   z-index: 80;
+  pointer-events: none;
+}
+
+.proofbar {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -19,6 +23,7 @@
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
+  pointer-events: auto;
 }
 
 .proofbar__btn {

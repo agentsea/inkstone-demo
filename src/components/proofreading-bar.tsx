@@ -30,13 +30,13 @@ export function ProofreadingBar({
     <AnimatePresence>
       {visible && (
         <m.div
-          className="proofbar"
-          data-tour-target="proofbar"
+          className="proofbar-wrapper"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
         >
+        <div className="proofbar" data-tour-target="proofbar">
           {/* Bulk actions */}
           <button className="proofbar__btn proofbar__btn--outline">
             Reject All
@@ -79,6 +79,7 @@ export function ProofreadingBar({
           >
             <X size={16} />
           </button>
+        </div>
         </m.div>
       )}
     </AnimatePresence>
