@@ -7,12 +7,8 @@
       "source": "/(.*)",
       "headers": [
         {
-          "key": "X-Frame-Options",
-          "value": "ALLOW-FROM https://inkstone.pro"
-        },
-        {
           "key": "Content-Security-Policy",
-          "value": "frame-ancestors 'self' https://inkstone.pro https://*.framer.app https://*.framer.website"
+          "value": "frame-ancestors 'self' https://inkstone.pro https://demo.inkstone.pro https://try.inkstone.pro https://*.framer.app https://*.framer.website https://framer.com https://*.webflow.io https://inkstone.webflow.io"
         }
       ]
     }
