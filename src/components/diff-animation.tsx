@@ -8,7 +8,6 @@
  */
 
 import { useState, useEffect, useRef } from "react";
-import { m } from "motion/react";
 import { ACT2 } from "../data/walkthrough-script";
 
 interface DiffAnimationProps {
@@ -110,14 +109,9 @@ export function DiffAnimation({
     return (
       <span className="diff-text">
         {ACT2.textWithErrors}
-        <m.span
-          className="diff-scanning"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 1.2, repeat: Infinity }}
-        >
+        <span className="diff-scanning">
           {" "}Scanning for errors...
-        </m.span>
+        </span>
       </span>
     );
   }
@@ -157,26 +151,20 @@ function renderTextWithDiffs(
 
       if (isVisible) {
         nodes.push(
-          <m.span
+          <span
             key={`del-${diff.original}`}
-            className="diff-deletion"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isResolving ? 0 : 1 }}
-            transition={{ duration: 0.3 }}
+            className={`diff-deletion ${isResolving ? "diff-deletion--resolved" : ""}`}
           >
             {diff.original}
-          </m.span>
+          </span>
         );
         nodes.push(
-          <m.span
+          <span
             key={`ins-${diff.corrected}`}
             className="diff-insertion"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
           >
             {diff.corrected}
-          </m.span>
+          </span>
         );
       } else {
         nodes.push(diff.original);
@@ -191,15 +179,12 @@ function renderTextWithDiffs(
 
       if (isVisible) {
         nodes.push(
-          <m.span
+          <span
             key={`ins-${diff.inserted}`}
             className="diff-insertion"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
           >
             {" "}{diff.inserted}
-          </m.span>
+          </span>
         );
       }
 

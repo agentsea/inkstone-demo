@@ -64,6 +64,15 @@
   padding: 1px 2px;
   border-radius: 2px;
   margin-right: 2px;
+  transition: opacity 0.3s ease;
+}
+
+.diff-deletion--resolved {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 .diff-insertion {
@@ -72,6 +81,7 @@
   color: var(--diff-insert-text);
   padding: 1px 2px;
   border-radius: 2px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .diff-accept-btn {
