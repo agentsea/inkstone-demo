@@ -190,23 +190,25 @@ export const TOUR_STEPS = [
     cta: "Insert to Doc \u2192",
     position: "left" as const,
   },
-  // --- Step 11: SIDEBAR REVEAL ---
+  // --- Step 10: SIDEBAR REVEAL ---
   {
     id: "sidebar-reveal",
     target: "sidebar",
     text: "Drafts, research, web searches \u2014 everything lives in your project. Nothing gets lost. No more juggling.",
+    cta: "One more thing \u2192",
     position: "right" as const,
     opensSidebar: true,
   },
-  // --- Step 12: FINALE ---
+  // --- Step 11: FINALE ---
   {
     id: "finale",
     target: "center",
-    text: "Think. Brainstorm. Write. Research. Edit. Iterate.\nOne app. One place. You\u2019re the boss.",
-    cta: "Try for FREE \u2192",
+    text: "Write. Rewrite. Proofread. Research. Fact-check.\nAll in one place. No more 20 tabs and 5 subscriptions.\n\nYou\u2019re the boss. Your AI team handles the rest.",
+    cta: "Try Inkstone for FREE \u2192",
     ctaLink: "https://accounts.inkstone.pro/sign-up",
     position: "center" as const,
     showReplay: true,
+    style: "yellow" as const,
   },
 ] as const;
 
