@@ -8,7 +8,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "frame-ancestors 'self' https://inkstone.pro https://demo.inkstone.pro https://try.inkstone.pro https://*.framer.app https://*.framer.website https://framer.com https://app.framer.com https://*.framerusercontent.com https://sites.framer.app https://*.webflow.io https://inkstone.webflow.io"
+          "value": "frame-ancestors *"
         }
       ]
     }
