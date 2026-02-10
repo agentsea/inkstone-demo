@@ -6,7 +6,9 @@
 .proofbar {
   position: fixed;
   bottom: 32px;
-  left: 50%;
+  /* Center on the editor panel, not the full viewport.
+     Sidebar is ~44px, chat panel is ~380px + resizers ~4px */
+  left: calc(44px + (100vw - 44px - 380px - 4px) / 2);
   transform: translateX(-50%);
   z-index: 80;
   display: flex;

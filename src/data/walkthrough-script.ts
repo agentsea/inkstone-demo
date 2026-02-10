@@ -140,13 +140,13 @@ export const TOUR_STEPS = [
     position: "top" as const,
     autoAdvance: true,
   },
-  // --- Step 4: REWRITE DONE ---
+  // --- Step 4: REWRITE DONE — tooltip sits above the proofreading bar ---
   {
     id: "rewrite-done",
-    target: "editor-paragraph",
+    target: "proofbar",
     text: "Rough notes \u2192 polished prose. No copy-pasting between apps. No switching tabs. Accept or reject one by one or all at once.",
     cta: "Next: Proofreading \u2192",
-    position: "bottom" as const,
+    position: "top" as const,
   },
   // --- Step 5: PROOFREAD ---
   {

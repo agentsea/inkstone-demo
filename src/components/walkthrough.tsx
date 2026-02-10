@@ -281,7 +281,18 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
       <ProofreadingBar
         visible={showProofBar}
         currentIndex={0}
-        onAcceptAll={handleAcceptAll}
+        onAcceptAll={() => {
+          // Accept diffs
+          handleAcceptAll();
+          // Also advance the tour if we're on a relevant step
+          if (tourActive) {
+            const step = TOUR_STEPS[tourStep];
+            if (step?.id === "rewrite-done" || step?.id === "see-diffs") {
+              setShowRewriteDiffs(false);
+              advanceTour();
+            }
+          }
+        }}
         onClose={() => setShowProofBar(false)}
       />
 
