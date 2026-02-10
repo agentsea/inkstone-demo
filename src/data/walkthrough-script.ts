@@ -147,29 +147,21 @@ export const TOUR_STEPS = [
     text: "Rough notes \u2192 polished prose. No copy-pasting between apps. No switching tabs. Accept or reject one by one or all at once.",
     cta: "Next: Proofreading \u2192",
     position: "top" as const,
+    triggersAct: "act2" as const, // auto-starts proofread when advancing
   },
-  // --- Step 5: PROOFREAD ---
-  {
-    id: "click-proofread",
-    target: "toolbar-proofread",
-    text: "How about proofreading? Inkstone goes way beyond a spelling and grammar checker. Fixes missing words, corrects major errors, reformats, fixes spacing, and also catches all those basic spelling and grammar errors too.",
-    cta: "Proofread \u2192",
-    position: "bottom" as const,
-    triggersAct: "act2" as const,
-  },
-  // --- Step 6: SCANNING ---
+  // --- Step 5: SCANNING (auto-advances when diffs appear) ---
   {
     id: "scanning",
-    target: "chat-messages",
-    text: "Your AI buddy is scanning your document...",
-    position: "left" as const,
+    target: "editor-paragraph",
+    text: "Proofreading your document...",
+    position: "top" as const,
     autoAdvance: true,
   },
-  // --- Step 7: SEE DIFFS ---
+  // --- Step 6: SEE DIFFS — explain AFTER they see the result ---
   {
     id: "see-diffs",
     target: "editor-paragraph",
-    text: "Not just spell-check. It caught a missing word too. Red = delete. Green = insert.",
+    text: "Caught a typo and a missing word. Not just spell-check \u2014 it fills in what\u2019s missing too.",
     cta: "Accept All \u2192",
     position: "bottom" as const,
   },
