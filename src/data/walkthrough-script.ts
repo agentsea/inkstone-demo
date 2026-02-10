@@ -203,7 +203,7 @@ export const TOUR_STEPS = [
   {
     id: "finale",
     target: "center",
-    text: "Write. Rewrite. Proofread. Research. Fact-check.\nAll in one place. No more 20 tabs and 5 subscriptions.\nYou\u2019re the boss. Your AI team handles the rest.",
+    text: "Write. Rewrite. Proofread. Research. Fact-check.\n\nAll in one place. No more 20 tabs and 5 subscriptions.\n\nYou\u2019re the boss. Your AI team handles the rest.",
     cta: "Try Inkstone for FREE \u2192",
     ctaLink: "https://accounts.inkstone.pro/sign-up",
     position: "center" as const,
