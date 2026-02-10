@@ -19,7 +19,9 @@ export type ResearchPhase =
 /** Hook that drives the research phase state machine */
 export function useResearchPhase(
   isActive: boolean,
-  onComplete?: () => void
+  onComplete?: () => void,
+  waitForInsert?: boolean,
+  triggerInsert?: boolean,
 ): ResearchPhase {
   const [phase, setPhase] = useState<ResearchPhase>("idle");
   const onCompleteRef = useRef(onComplete);
@@ -42,24 +44,37 @@ export function useResearchPhase(
       setTimeout(() => {
         setPhase("response-visible");
 
-        // Auto-click "Insert to Doc"
-        timers.push(
-          setTimeout(() => {
-            setPhase("inserting");
-
-            timers.push(
-              setTimeout(() => {
-                setPhase("inserted");
-                onCompleteRef.current?.();
-              }, ACT3.insertAnimationDuration)
-            );
-          }, ACT3.insertToDocDelay)
-        );
+        // In auto mode, auto-insert after delay
+        if (!waitForInsert) {
+          timers.push(
+            setTimeout(() => {
+              setPhase("inserting");
+              timers.push(
+                setTimeout(() => {
+                  setPhase("inserted");
+                  onCompleteRef.current?.();
+                }, ACT3.insertAnimationDuration)
+              );
+            }, ACT3.insertToDocDelay)
+          );
+        }
       }, ACT3.loadingShimmerDuration)
     );
 
     return () => timers.forEach(clearTimeout);
-  }, [isActive]);
+  }, [isActive, waitForInsert]);
+
+  // External insert trigger (from guided tour)
+  useEffect(() => {
+    if (triggerInsert && phase === "response-visible") {
+      setPhase("inserting");
+      const timer = setTimeout(() => {
+        setPhase("inserted");
+        onCompleteRef.current?.();
+      }, ACT3.insertAnimationDuration);
+      return () => clearTimeout(timer);
+    }
+  }, [triggerInsert, phase]);
 
   return phase;
 }

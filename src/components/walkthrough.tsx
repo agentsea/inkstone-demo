@@ -52,13 +52,16 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
   const [acceptAllTriggered, setAcceptAllTriggered] = useState(false);
   const [showProofBar, setShowProofBar] = useState(false);
   const [showRewriteDiffs, setShowRewriteDiffs] = useState(false);
+  const [insertTriggered, setInsertTriggered] = useState(false);
 
   const currentStep = TOUR_STEPS[tourStep];
 
-  // Research phase
+  // Research phase — waits for user click in guided mode
   const researchPhase = useResearchPhase(
     (state === "act3" && chatTypingDone) || state === "act3-complete",
-    () => handleActComplete("research")
+    () => handleActComplete("research"),
+    mode === "guided", // waitForInsert
+    insertTriggered, // triggerInsert
   );
 
   const currentAct: Act =
@@ -217,6 +220,7 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
     setAcceptAllTriggered(false);
     setShowProofBar(false);
     setShowRewriteDiffs(false);
+    setInsertTriggered(false);
     setState("idle");
     setTourStep(0);
     setTourActive(true);
@@ -234,6 +238,11 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
     // Step 7 "see-diffs": trigger acceptance
     if (step?.id === "see-diffs") {
       handleAcceptAll();
+    }
+
+    // Step 10 "insert-to-doc": trigger the insert
+    if (step?.id === "insert-to-doc") {
+      setInsertTriggered(true);
     }
 
     advanceTour();
