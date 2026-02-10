@@ -263,6 +263,7 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
             acceptAll={acceptAllTriggered}
             onDiffsVisible={handleDiffsVisible}
             showRewriteDiffs={showRewriteDiffs}
+            chatTypingDone={chatTypingDone}
           />
         </div>
         <div className="walkthrough__resizer" />

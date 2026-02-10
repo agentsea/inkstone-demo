@@ -37,10 +37,11 @@ interface FakeEditorProps {
   acceptAll?: boolean;
   onDiffsVisible?: () => void;
   showRewriteDiffs?: boolean;
+  chatTypingDone?: boolean;
 }
 
 export const FakeEditor = forwardRef<HTMLDivElement, FakeEditorProps>(
-  function FakeEditor({ state, researchPhase = "idle", onActComplete, theme, onToggleTheme, waitForAccept, acceptAll, onDiffsVisible, showRewriteDiffs }, ref) {
+  function FakeEditor({ state, researchPhase = "idle", onActComplete, theme, onToggleTheme, waitForAccept, acceptAll, onDiffsVisible, showRewriteDiffs, chatTypingDone }, ref) {
     const isMorphing = state === "act1";
 
     return (
@@ -170,7 +171,7 @@ export const FakeEditor = forwardRef<HTMLDivElement, FakeEditorProps>(
               className={`fake-editor__paragraph ${isMorphing ? "fake-editor__paragraph--morphing" : ""}`}
               data-tour-target="editor-paragraph"
             >
-              {renderEditorContent(state, onActComplete, waitForAccept, acceptAll, onDiffsVisible, showRewriteDiffs)}
+              {renderEditorContent(state, onActComplete, waitForAccept, acceptAll, onDiffsVisible, showRewriteDiffs, chatTypingDone)}
             </p>
 
             <ResearchDocInsert phase={researchPhase} />
@@ -190,11 +191,16 @@ function renderEditorContent(
   acceptAll?: boolean,
   onDiffsVisible?: () => void,
   showRewriteDiffs?: boolean,
+  chatTypingDone?: boolean,
 ): React.ReactNode {
   switch (state) {
     case "idle":
       return ACT1.roughDraft;
     case "act1":
+      // Wait for chat typing to finish before starting morph
+      if (!chatTypingDone) {
+        return ACT1.roughDraft;
+      }
       return (
         <TextMorph
           from={ACT1.roughDraft}
