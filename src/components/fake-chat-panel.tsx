@@ -72,8 +72,10 @@ export function FakeChatPanel({
             <div className="fake-chat__user-msg">
               {state === "act1" && !act1TypingDone ? (
                 <TypingAnimation
+                  key="act1-typing"
                   text={ACT1.chatPrompt}
                   speed={ACT1.typingSpeed}
+                  delay={400}
                   onComplete={() => {
                     setAct1TypingDone(true);
                     onChatTypingDone?.();
@@ -107,8 +109,10 @@ export function FakeChatPanel({
             <div className="fake-chat__user-msg">
               {state === "act3" && !act3TypingDone ? (
                 <TypingAnimation
+                  key="act3-typing"
                   text={ACT3.chatPrompt}
                   speed={ACT3.typingSpeed}
+                  delay={400}
                   onComplete={() => {
                     setAct3TypingDone(true);
                     onChatTypingDone?.();

@@ -1,8 +1,9 @@
 /**
  * TypingAnimation — Character-by-character text reveal.
  *
- * Used for chat messages (user typing a prompt, AI typing a response).
+ * Used for chat messages (user typing a prompt).
  * Blinking cursor at the end while typing, disappears on completion.
+ * Robust against React StrictMode double-mounting.
  */
 
 import { useState, useEffect, useRef } from "react";
@@ -18,39 +19,49 @@ interface TypingAnimationProps {
 export function TypingAnimation({
   text,
   speed = 50,
-  delay = 0,
+  delay = 300,
   onComplete,
   className = "",
 }: TypingAnimationProps) {
-  const [displayed, setDisplayed] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
+  const [charIndex, setCharIndex] = useState(0);
+  const [started, setStarted] = useState(false);
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
+  const completedRef = useRef(false);
 
+  // Reset when text changes
   useEffect(() => {
-    setDisplayed("");
-    setIsTyping(false);
+    setCharIndex(0);
+    setStarted(false);
+    completedRef.current = false;
+  }, [text]);
 
-    const delayTimer = setTimeout(() => {
-      setIsTyping(true);
-      let i = 0;
+  // Delay before starting
+  useEffect(() => {
+    const timer = setTimeout(() => setStarted(true), delay);
+    return () => clearTimeout(timer);
+  }, [delay, text]);
 
-      const interval = setInterval(() => {
-        i++;
-        if (i <= text.length) {
-          setDisplayed(text.slice(0, i));
-        } else {
-          clearInterval(interval);
-          setIsTyping(false);
-          onCompleteRef.current?.();
-        }
-      }, speed);
+  // Type one character at a time
+  useEffect(() => {
+    if (!started) return;
+    if (charIndex >= text.length) {
+      if (!completedRef.current) {
+        completedRef.current = true;
+        onCompleteRef.current?.();
+      }
+      return;
+    }
 
-      return () => clearInterval(interval);
-    }, delay);
+    const timer = setTimeout(() => {
+      setCharIndex((prev) => prev + 1);
+    }, speed);
 
-    return () => clearTimeout(delayTimer);
-  }, [text, speed, delay]);
+    return () => clearTimeout(timer);
+  }, [started, charIndex, text.length, speed]);
+
+  const displayed = started ? text.slice(0, charIndex) : "";
+  const isTyping = started && charIndex < text.length;
 
   return (
     <span className={className}>
