@@ -132,7 +132,16 @@ export const TOUR_STEPS = [
     position: "left" as const,
     triggersAct: "act1" as const,
   },
-  // --- Step 3: WATCH MORPH ---
+  // --- Step 3: TYPING IN PROGRESS (no tooltip, input glows) ---
+  {
+    id: "typing-in-progress",
+    target: "chat-input",
+    text: "",
+    position: "left" as const,
+    hidden: true, // no tooltip shown — focus on the typing animation
+    autoAdvance: true, // advances when chatTypingDone
+  },
+  // --- Step 4: WATCH MORPH (shown after message sends) ---
   {
     id: "watch-morph",
     target: "editor-paragraph",

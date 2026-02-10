@@ -148,19 +148,21 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
     const step = TOUR_STEPS[tourStep];
     if (!step || !("autoAdvance" in step) || !step.autoAdvance) return;
 
+    // Typing done → advance from hidden typing step to watch-morph
+    if (step.id === "typing-in-progress" && chatTypingDone) {
+      const t = setTimeout(advanceTour, 300);
+      return () => clearTimeout(t);
+    }
     // Watch for act completions to auto-advance
     if (step.id === "watch-morph" && state === "act1-complete") {
       const t = setTimeout(advanceTour, 600);
       return () => clearTimeout(t);
     }
-    if (step.id === "scanning" && (state === "act2" || state === "act2-complete")) {
-      // Wait for diffs to show, then advance
-    }
     if (step.id === "searching" && researchPhase === "response-visible") {
       const t = setTimeout(advanceTour, 400);
       return () => clearTimeout(t);
     }
-  }, [tourActive, tourStep, state, researchPhase, advanceTour]);
+  }, [tourActive, tourStep, state, chatTypingDone, researchPhase, advanceTour]);
 
   // --- GUIDED: advance from scanning when diffs are visible ---
   useEffect(() => {
@@ -303,7 +305,7 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
       </div>
 
       {/* Guided tour tooltip */}
-      {tourActive && currentStep && (
+      {tourActive && currentStep && !("hidden" in currentStep && currentStep.hidden) && (
         <TourTooltip
           text={currentStep.text}
           cta={"cta" in currentStep ? currentStep.cta : undefined}
