@@ -94,6 +94,7 @@ function computeTransform(
 export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps) {
   const [shotIndex, setShotIndex] = useState(0);
   const [caption, setCaption] = useState(MOBILE_SHOTS[0].caption);
+  const [replayKey, setReplayKey] = useState(0);
   const viewportRef = useRef<HTMLDivElement>(null);
   const [viewportSize, setViewportSize] = useState({ w: 375, h: 667 - CAPTION_CARD_HEIGHT });
 
@@ -196,6 +197,15 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
   const canFullscreen =
     typeof document !== "undefined" && !!document.documentElement.requestFullscreen;
 
+  // --- Replay: reset camera + remount walkthrough ---
+  const handleReplay = useCallback(() => {
+    setShotIndex(0);
+    setCaption(MOBILE_SHOTS[0].caption);
+    setHoldingWide(true);
+    holdTimerRef.current = null;
+    setReplayKey((k) => k + 1);
+  }, []);
+
   const shot: CameraShot = MOBILE_SHOTS[shotIndex];
   const canvasStyle = computeTransform(shot, viewportSize.w, viewportSize.h);
 
@@ -205,6 +215,7 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
       <div className="mobile-camera__viewport" ref={viewportRef}>
         <div className="mobile-camera__canvas" style={canvasStyle}>
           <Walkthrough
+            key={replayKey}
             theme={theme}
             onToggleTheme={onToggleTheme}
             modeOverride="auto"
@@ -228,15 +239,19 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
       {/* Caption card — overlaid at bottom, NOT transformed */}
       <div className={`mobile-camera__caption-card${shot.captionLink ? " mobile-camera__caption-card--cta" : ""}`}>
         {shot.captionLink ? (
-          <a
-            className="mobile-camera__caption-link"
-            href={shot.captionLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            key={shot.id}
-          >
-            {caption}
-          </a>
+          <div className="mobile-camera__caption-cta-row" key={shot.id}>
+            <a
+              className="mobile-camera__caption-link"
+              href={shot.captionLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {caption}
+            </a>
+            <button className="mobile-camera__replay-btn" onClick={handleReplay}>
+              Replay
+            </button>
+          </div>
         ) : (
           <p className="mobile-camera__caption-text" key={shot.id}>
             {caption}
