@@ -128,17 +128,16 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
 
       if (holdingWide) return;
 
+      // Once we're in the sidebar/finale sequence (shot >= 9),
+      // the timed advance owns the shot index — don't let snapshots override it.
+      if (shotIndex >= 9) return;
+
       const idx = snapshotToShotIndex(snap);
       const clamped = Math.min(idx, MOBILE_SHOTS.length - 1);
 
       if (clamped !== shotIndex) {
         setShotIndex(clamped);
         setCaption(MOBILE_SHOTS[clamped].caption);
-      }
-
-      // Update caption when sidebar opens while already on shot 9
-      if (snap.sidebarOpen && shotIndex === 9 && clamped === 9) {
-        setCaption(MOBILE_SHOTS[9].caption);
       }
     },
     [holdingWide, shotIndex],
