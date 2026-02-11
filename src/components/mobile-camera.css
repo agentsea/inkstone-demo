@@ -26,6 +26,43 @@
   will-change: transform;
 }
 
+/* --- Fullscreen button --- */
+.mobile-camera__fullscreen-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.mobile-camera__fullscreen-btn:active {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+[data-theme="light"] .mobile-camera__fullscreen-btn {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="light"] .mobile-camera__fullscreen-btn:active {
+  background: rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
 /* --- Caption Card — matches desktop tooltip style exactly --- */
 .mobile-camera__caption-card {
   position: absolute;

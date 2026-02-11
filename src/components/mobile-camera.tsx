@@ -2,14 +2,16 @@
  * MobileCameraWrapper — "Screen Studio" virtual camera for mobile viewports.
  *
  * Renders the desktop walkthrough at 1200×800 inside an overflow:hidden viewport,
- * then applies CSS transform: scale() + transform-origin to zoom/pan to the action.
+ * then applies CSS transform to zoom/pan to the action.
  *
- * A caption bar at the bottom replaces tooltips on mobile.
+ * A caption card at the bottom replaces tooltips on mobile.
+ * A fullscreen button hides the browser chrome for maximum viewport.
  *
  * Desktop is completely untouched — this component is only mounted on mobile.
  */
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import { Maximize, Minimize } from "lucide-react";
 import { Walkthrough, type WalkthroughSnapshot } from "./walkthrough";
 import type { Theme } from "./theme-listener";
 import { MOBILE_SHOTS, CANVAS, type CameraShot } from "../data/mobile-shots";
@@ -25,7 +27,6 @@ const CAPTION_CARD_HEIGHT = 80;
 
 /**
  * Map a walkthrough state snapshot → shot index (0-based).
- * Returns the shot that should be active for the given state.
  *
  * Shot indices:
  *  0 = wide open          6 = research typing
@@ -66,10 +67,6 @@ function snapshotToShotIndex(snap: WalkthroughSnapshot): number {
 
 /**
  * Compute CSS transform to center (originX, originY) in the viewport at the given scale.
- *
- * The math:
- * 1. Scale the canvas by `scale` from top-left (transform-origin: 0 0)
- * 2. Translate so that the focus point (originX, originY) lands at the viewport center
  *
  * translateX = viewportWidth/2 - originX * scale
  * translateY = viewportHeight/2 - originY * scale
@@ -116,23 +113,20 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
     return () => ro.disconnect();
   }, []);
 
-  // Hold the establishing wide shot for a fixed duration before the camera starts tracking.
-  // The walkthrough auto-starts after 500ms, but we want to hold the wide shot for 2.5s
-  // so the viewer absorbs "this is a real desktop app" before we zoom in.
+  // Hold the establishing wide shot before the camera starts tracking.
   const [holdingWide, setHoldingWide] = useState(true);
   const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Start hold timer when first meaningful state arrives
   const handleSnapshot = useCallback(
     (snap: WalkthroughSnapshot) => {
       // When the walkthrough starts act1, begin the hold countdown
       if (holdingWide && snap.state === "act1" && !holdTimerRef.current) {
         holdTimerRef.current = setTimeout(() => {
           setHoldingWide(false);
-        }, 2000); // 2s hold on wide shot after act starts
+        }, 2000);
       }
 
-      if (holdingWide) return; // still showing establishing wide shot
+      if (holdingWide) return;
 
       const idx = snapshotToShotIndex(snap);
       const clamped = Math.min(idx, MOBILE_SHOTS.length - 1);
@@ -152,11 +146,36 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
     };
   }, []);
 
+  // --- Fullscreen toggle ---
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const toggleFullscreen = useCallback(() => {
+    if (!wrapperRef.current) return;
+
+    if (!document.fullscreenElement) {
+      wrapperRef.current.requestFullscreen().catch(() => {
+        // Fullscreen not supported or denied — silently ignore
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  }, []);
+
+  useEffect(() => {
+    const handler = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", handler);
+    return () => document.removeEventListener("fullscreenchange", handler);
+  }, []);
+
+  const canFullscreen =
+    typeof document !== "undefined" && !!document.documentElement.requestFullscreen;
+
   const shot: CameraShot = MOBILE_SHOTS[shotIndex];
   const canvasStyle = computeTransform(shot, viewportSize.w, viewportSize.h);
 
   return (
-    <div className="mobile-camera" data-theme={theme}>
+    <div className="mobile-camera" data-theme={theme} ref={wrapperRef}>
       {/* Viewport — clips the 1200×800 canvas to mobile size */}
       <div className="mobile-camera__viewport" ref={viewportRef}>
         <div className="mobile-camera__canvas" style={canvasStyle}>
@@ -170,7 +189,18 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
         </div>
       </div>
 
-      {/* Caption card — frosted glass, overlaid at bottom, NOT transformed */}
+      {/* Fullscreen toggle — top right corner */}
+      {canFullscreen && (
+        <button
+          className="mobile-camera__fullscreen-btn"
+          onClick={toggleFullscreen}
+          aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+        >
+          {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+        </button>
+      )}
+
+      {/* Caption card — overlaid at bottom, NOT transformed */}
       <div className="mobile-camera__caption-card">
         {shot.captionLink ? (
           <a
