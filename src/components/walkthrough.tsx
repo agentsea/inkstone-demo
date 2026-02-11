@@ -148,9 +148,10 @@ export function Walkthrough({ theme, onToggleTheme, modeOverride, forceDesktopLa
       const t = setTimeout(() => { setChatTypingDone(false); setState("act3"); }, TIMING.interActDelay);
       return () => clearTimeout(t);
     }
-    // Auto mode: open sidebar after act3 completes, then mark complete
+    // Auto mode: open sidebar after act3 completes
+    // Delay gives the mobile camera time to zoom to the sidebar area first
     if (state === "act3-complete" && !sidebarOpen) {
-      const t = setTimeout(() => { setSidebarOpen(true); }, TIMING.interActDelay);
+      const t = setTimeout(() => { setSidebarOpen(true); }, 2000);
       return () => clearTimeout(t);
     }
   }, [state, mode, sidebarOpen]);

@@ -39,10 +39,10 @@ const CAPTION_CARD_HEIGHT = 80;
 function snapshotToShotIndex(snap: WalkthroughSnapshot): number {
   const { state, chatTypingDone, sidebarOpen, researchPhase } = snap;
 
-  // --- Act 3 complete + sidebar open → finale (shot 12)
-  if (state === "act3-complete" && sidebarOpen) return 11;
-  // --- Sidebar opened → sidebar zoom (shot 10) — timed advance to 11 handled separately
+  // --- Sidebar open → timed sequence handles 9 → 10 → 11
   if (sidebarOpen) return 9;
+  // --- Act 3 complete, sidebar not yet open → zoom to sidebar area early (camera arrives before sidebar opens)
+  if (state === "act3-complete") return 9;
   // --- Research: inserted → insert to doc (shot 9)
   if (researchPhase === "inserted" || researchPhase === "inserting") return 8;
   // --- Research: response visible → research response (shot 8)
@@ -135,21 +135,27 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
         setShotIndex(clamped);
         setCaption(MOBILE_SHOTS[clamped].caption);
       }
+
+      // Update caption when sidebar opens while already on shot 9
+      if (snap.sidebarOpen && shotIndex === 9 && clamped === 9) {
+        setCaption(MOBILE_SHOTS[9].caption);
+      }
     },
     [holdingWide, shotIndex],
   );
 
   // --- Timed advance for sidebar reveal sequence (shots 9 → 10 → 11) ---
+  // Shot 9: camera zooms to sidebar area. Sidebar opens ~2s after arriving.
+  // Hold 5s total so viewer has ~3s to read the project tree after it opens.
+  // Then pull back to show full app, then finale.
   useEffect(() => {
-    // When we land on the sidebar zoom shot, auto-advance to pull-back after 3s
     if (shotIndex === 9) {
       const t = setTimeout(() => {
         setShotIndex(10);
         setCaption(MOBILE_SHOTS[10].caption);
-      }, 3000);
+      }, 5000);
       return () => clearTimeout(t);
     }
-    // When we land on the pull-back shot, auto-advance to finale after 3s
     if (shotIndex === 10) {
       const t = setTimeout(() => {
         setShotIndex(11);
