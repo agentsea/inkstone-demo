@@ -123,9 +123,9 @@ export const MOBILE_SHOTS: CameraShot[] = [
   // Shot 10 — ZOOM TO SIDEBAR: project tree visible
   {
     id: "sidebar-reveal",
-    scale: 1.3,
-    originX: 130,
-    originY: 400,
+    scale: 1.2,
+    originX: 150,
+    originY: 320,
     caption: "Drafts, research, searches \u2014 organized in one project. Nothing gets lost.",
     transitionMs: 800,
     easing: "cubic-bezier(0.16, 1, 0.3, 1)",
