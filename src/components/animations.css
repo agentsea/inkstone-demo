@@ -22,23 +22,39 @@
 }
 
 .text-morph--active {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
+  display: inline;
 }
 
 .text-morph__word {
   display: inline;
-  transition: color var(--duration-normal) ease;
+  will-change: transform, opacity;
 }
 
-.text-morph__word--new {
-  color: var(--text-accent);
+/* Shimmer sweep on completion */
+.text-morph--done {
+  display: inline;
+  animation: morph-shimmer 0.8s ease-out;
 }
 
-/* Brief glow on the paragraph during morph */
+@keyframes morph-shimmer {
+  0% {
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 0%, transparent 0%);
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+  50% {
+    background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%);
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+  100% {
+    background: none;
+  }
+}
+
+/* Soft glow on the paragraph during morph — no color, just light */
 .fake-editor__paragraph--morphing {
-  box-shadow: 0 0 30px rgba(124, 138, 255, 0.08);
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.04);
   border-radius: var(--radius-md);
   transition: box-shadow var(--duration-slow) ease;
 }
