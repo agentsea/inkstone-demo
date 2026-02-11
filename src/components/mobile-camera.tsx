@@ -26,19 +26,41 @@ const CAPTION_CARD_HEIGHT = 80;
 /**
  * Map a walkthrough state snapshot → shot index (0-based).
  * Returns the shot that should be active for the given state.
+ *
+ * Shot indices:
+ *  0 = wide open          6 = research typing
+ *  1 = chat input typing  7 = research response
+ *  2 = message sent        8 = insert to doc
+ *  3 = text morph           9 = sidebar reveal
+ *  4 = rewrite diffs       10 = finale
+ *  5 = proofread diffs
  */
 function snapshotToShotIndex(snap: WalkthroughSnapshot): number {
-  const { state, chatTypingDone } = snap;
+  const { state, chatTypingDone, sidebarOpen, researchPhase } = snap;
 
-  // Shot 6: Act 2 running or complete
-  if (state === "act2" || state === "act2-complete") return 5;
-  // Shot 5: Act 1 complete (rewrite diffs visible)
+  // --- Act 3 complete → finale (shot 11)
+  if (state === "act3-complete") return 10;
+  // --- Sidebar opened → sidebar reveal (shot 10)
+  if (sidebarOpen) return 9;
+  // --- Research: inserted → insert to doc (shot 9)
+  if (researchPhase === "inserted" || researchPhase === "inserting") return 8;
+  // --- Research: response visible → research response (shot 8)
+  if (researchPhase === "response-visible") return 7;
+  // --- Act 3 running, typing done → research loading/response (shot 8)
+  if (state === "act3" && chatTypingDone) return 7;
+  // --- Act 3 running, typing → research typing (shot 7)
+  if (state === "act3" && !chatTypingDone) return 6;
+  // --- Act 2 complete → stays on proofread diffs briefly
+  if (state === "act2-complete") return 5;
+  // --- Act 2 running → proofread diffs (shot 6)
+  if (state === "act2") return 5;
+  // --- Act 1 complete → rewrite diffs (shot 5)
   if (state === "act1-complete") return 4;
-  // Shot 4: Act 1 running, typing done → morph playing
+  // --- Act 1 running, typing done → text morph (shot 4)
   if (state === "act1" && chatTypingDone) return 3;
-  // Shot 2: Act 1 running, typing in progress
+  // --- Act 1 running, typing → chat input (shot 2)
   if (state === "act1" && !chatTypingDone) return 1;
-  // Shot 1: Idle
+  // --- Idle → wide (shot 1)
   return 0;
 }
 
@@ -113,7 +135,6 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
       if (holdingWide) return; // still showing establishing wide shot
 
       const idx = snapshotToShotIndex(snap);
-      // Clamp to available shots (we only have 1–6 so far)
       const clamped = Math.min(idx, MOBILE_SHOTS.length - 1);
 
       if (clamped !== shotIndex) {
@@ -151,9 +172,21 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
 
       {/* Caption card — frosted glass, overlaid at bottom, NOT transformed */}
       <div className="mobile-camera__caption-card">
-        <p className="mobile-camera__caption-text" key={shot.id}>
-          {caption}
-        </p>
+        {shot.captionLink ? (
+          <a
+            className="mobile-camera__caption-link"
+            href={shot.captionLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            key={shot.id}
+          >
+            {caption}
+          </a>
+        ) : (
+          <p className="mobile-camera__caption-text" key={shot.id}>
+            {caption}
+          </p>
+        )}
       </div>
     </div>
   );

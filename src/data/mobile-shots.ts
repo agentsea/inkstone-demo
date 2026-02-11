@@ -4,7 +4,7 @@
  * Each shot defines where the camera focuses on the 1200×800 desktop canvas.
  * The MobileCameraWrapper maps walkthrough state → shot index → camera transform.
  *
- * Currently implements shots 1–6 (through Act 2 proofreading).
+ * 11 shots total — full walkthrough.
  */
 
 export interface CameraShot {
@@ -88,6 +88,57 @@ export const MOBILE_SHOTS: CameraShot[] = [
     originY: 380,
     caption: "Catches typos and missing words.",
     transitionMs: 500,
+    easing: "cubic-bezier(0.33, 1, 0.68, 1)",
+  },
+  // Shot 7 — PAN RIGHT: RESEARCH TYPING (mirrors shot 2)
+  {
+    id: "research-typing",
+    scale: 1.15,
+    originX: 990,
+    originY: 740,
+    caption: "Need to research something? Just ask.",
+    transitionMs: 800,
+    easing: "cubic-bezier(0.33, 1, 0.68, 1)",
+  },
+  // Shot 8 — PAN UP: RESEARCH RESPONSE
+  {
+    id: "research-response",
+    scale: 1.0,
+    originX: 990,
+    originY: 400,
+    caption: "Sources included. One click to insert.",
+    transitionMs: 600,
+    easing: "cubic-bezier(0.33, 1, 0.68, 1)",
+  },
+  // Shot 9 — PAN LEFT: INSERT INTO EDITOR
+  {
+    id: "insert-to-doc",
+    scale: 1.0,
+    originX: 430,
+    originY: 500,
+    caption: "Research flows right into your document.",
+    transitionMs: 600,
+    easing: "cubic-bezier(0.33, 1, 0.68, 1)",
+  },
+  // Shot 10 — ZOOM OUT: SIDEBAR REVEAL (the big pull-back)
+  {
+    id: "sidebar-reveal",
+    scale: 0.45,
+    originX: 500,
+    originY: 400,
+    caption: "Everything lives in one project.",
+    transitionMs: 1000,
+    easing: "cubic-bezier(0.16, 1, 0.3, 1)", // slow dramatic ease-out
+  },
+  // Shot 11 — FULL WIDE: FINALE
+  {
+    id: "finale",
+    scale: 0.31,
+    originX: 600,
+    originY: 400,
+    caption: "Try Inkstone for FREE \u2192",
+    captionLink: "https://accounts.inkstone.pro/sign-up",
+    transitionMs: 600,
     easing: "cubic-bezier(0.33, 1, 0.68, 1)",
   },
 ];

@@ -38,6 +38,7 @@ export interface WalkthroughSnapshot {
   diffsVisible: boolean;
   sidebarOpen: boolean;
   tourStep: number;
+  researchPhase: string;
 }
 
 interface WalkthroughProps {
@@ -239,8 +240,9 @@ export function Walkthrough({ theme, onToggleTheme, modeOverride, forceDesktopLa
       diffsVisible,
       sidebarOpen,
       tourStep,
+      researchPhase,
     });
-  }, [state, chatTypingDone, diffsVisible, sidebarOpen, tourStep, onSnapshot]);
+  }, [state, chatTypingDone, diffsVisible, sidebarOpen, tourStep, researchPhase, onSnapshot]);
 
   const handleReplay = useCallback(() => {
     setChatTypingDone(false);
