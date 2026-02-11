@@ -148,7 +148,12 @@ export function Walkthrough({ theme, onToggleTheme, modeOverride, forceDesktopLa
       const t = setTimeout(() => { setChatTypingDone(false); setState("act3"); }, TIMING.interActDelay);
       return () => clearTimeout(t);
     }
-  }, [state, mode]);
+    // Auto mode: open sidebar after act3 completes, then mark complete
+    if (state === "act3-complete" && !sidebarOpen) {
+      const t = setTimeout(() => { setSidebarOpen(true); }, TIMING.interActDelay);
+      return () => clearTimeout(t);
+    }
+  }, [state, mode, sidebarOpen]);
 
   // --- AUTO MODE: auto-start ---
   useEffect(() => {
