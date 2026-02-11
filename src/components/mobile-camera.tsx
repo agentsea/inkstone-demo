@@ -94,16 +94,23 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
     return () => ro.disconnect();
   }, []);
 
-  // Track the walkthrough auto-start delay — show wide shot first
-  const [started, setStarted] = useState(false);
-  useEffect(() => {
-    const t = setTimeout(() => setStarted(true), 2500); // hold wide shot for 2.5s
-    return () => clearTimeout(t);
-  }, []);
+  // Hold the establishing wide shot for a fixed duration before the camera starts tracking.
+  // The walkthrough auto-starts after 500ms, but we want to hold the wide shot for 2.5s
+  // so the viewer absorbs "this is a real desktop app" before we zoom in.
+  const [holdingWide, setHoldingWide] = useState(true);
+  const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Start hold timer when first meaningful state arrives
   const handleSnapshot = useCallback(
     (snap: WalkthroughSnapshot) => {
-      if (!started) return; // still showing establishing wide shot
+      // When the walkthrough starts act1, begin the hold countdown
+      if (holdingWide && snap.state === "act1" && !holdTimerRef.current) {
+        holdTimerRef.current = setTimeout(() => {
+          setHoldingWide(false);
+        }, 2000); // 2s hold on wide shot after act starts
+      }
+
+      if (holdingWide) return; // still showing establishing wide shot
 
       const idx = snapshotToShotIndex(snap);
       // Clamp to available shots (we only have 1–6 so far)
@@ -114,8 +121,15 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
         setCaption(MOBILE_SHOTS[clamped].caption);
       }
     },
-    [started, shotIndex],
+    [holdingWide, shotIndex],
   );
+
+  // Cleanup hold timer
+  useEffect(() => {
+    return () => {
+      if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+    };
+  }, []);
 
   const shot: CameraShot = MOBILE_SHOTS[shotIndex];
   const canvasStyle = computeTransform(shot, viewportSize.w, viewportSize.h);
