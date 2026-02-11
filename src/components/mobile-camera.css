@@ -31,7 +31,7 @@
 /* --- Caption Card — Frosted glass at bottom --- */
 .mobile-camera__caption-card {
   position: absolute;
-  bottom: 12px;
+  top: 12px;
   left: 12px;
   right: 12px;
   min-height: 64px;
