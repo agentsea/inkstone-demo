@@ -87,3 +87,16 @@
     width: 300px;
   }
 }
+
+/* --- Forced Desktop Layout (for mobile camera wrapper) --- */
+.walkthrough--desktop-forced .walkthrough__content {
+  flex-direction: row;
+}
+.walkthrough--desktop-forced .walkthrough__resizer {
+  display: block;
+  width: 2px;
+}
+.walkthrough--desktop-forced .walkthrough__chat {
+  width: 380px;
+  height: auto;
+}

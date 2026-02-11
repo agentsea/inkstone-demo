@@ -254,3 +254,11 @@
     font-size: 13px;
   }
 }
+
+/* Force desktop layout for mobile camera */
+.walkthrough--desktop-forced .fake-chat__messages {
+  padding: 12px;
+}
+.walkthrough--desktop-forced .fake-chat__user-msg {
+  font-size: 14px;
+}

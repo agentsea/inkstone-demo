@@ -218,3 +218,8 @@
     display: none;
   }
 }
+
+/* Force desktop layout for mobile camera */
+.walkthrough--desktop-forced .fake-sidebar {
+  display: block;
+}

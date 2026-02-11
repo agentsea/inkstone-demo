@@ -1,0 +1,74 @@
+/* ============================================================
+   Mobile Camera — "Screen Studio" virtual camera viewport
+   ============================================================ */
+
+.mobile-camera {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-primary);
+}
+
+/* The clipping viewport — same size as the mobile iframe */
+.mobile-camera__viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* The 1200×800 canvas that contains the desktop walkthrough.
+   Positioned absolutely so transforms work from the top-left corner. */
+.mobile-camera__canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* width/height set inline (1200×800) */
+  will-change: transform;
+}
+
+/* --- Caption Bar --- */
+.mobile-camera__caption-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10;
+  padding: 0 16px;
+}
+
+.mobile-camera__caption-text {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  text-align: center;
+  margin: 0;
+  line-height: 1.3;
+  /* Crossfade animation */
+  animation: caption-fade-in 0.3s ease-out;
+}
+
+@keyframes caption-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Light mode caption bar — slightly lighter */
+[data-theme="light"] .mobile-camera__caption-bar {
+  background: rgba(0, 0, 0, 0.8);
+}

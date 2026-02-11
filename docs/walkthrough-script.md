@@ -1,6 +1,8 @@
 # Walkthrough Script — Editable Draft
 
 > Edit this file freely. Once you're happy, I'll update `src/data/walkthrough-script.ts` to match.
+>
+> **Last synced with code**: February 10, 2026 — matches `walkthrough-script.ts` exactly.
 
 ---
 
@@ -11,7 +13,7 @@
 
 ---
 
-## Sidebar — Project Tree (shown when sidebar opens)
+## Sidebar — Project Tree (shown when sidebar opens at Step 11)
 
 ```
 ▼ Substack Articles
@@ -32,7 +34,7 @@
 
 **CHAT PROMPT:**
 
-> Tighten this up and make it flow better. Keep my voice.
+> Tighten this up and make it flow better. Give it more power and punch. Keep my voice.
 
 **AFTER (polished):**
 
@@ -46,6 +48,8 @@
 
 1. "handcrafed" → "handcrafted" (missing 't')
 2. "people could them" → "people could **afford** them" (missing word)
+
+**Scanning output** (shown in AI chat): "vanquishing typos...fixing spacing...correcting grammar..."
 
 ---
 
@@ -67,31 +71,30 @@
 
 ---
 
-## Guided Tour — Step-by-Step Tooltip Cards
+## Guided Tour — 12 Steps
 
 Each step is a tooltip card that appears on screen. Edit the card text, cut steps, reorder — whatever feels right.
 
 ---
 
-### Step 1 — INTRO
+### Step 1 — INTRO (yellow card, pulsing)
 ```
 ┌─────────────────────────────────────────────────┐
 │                                                   │
-│  Inkstone is a co-creative writing app where you're in charge.
-
-You write. Your AI buddy handles the research,  │
-│  editing, fact-checking, and proofreading.        │
-│  
-Click me to see how it works!                          │
+│  Inkstone is a co-creative writing app where      │
+│  you're in charge.                                │
+│                                                   │
+│  You write. Your AI buddy handles the research,   │
+│  editing, fact-checking, and proofreading.         │
+│                                                   │
+│  Click me to see how it works!                    │
 │                                                   │
 │                              [ Start → ]          │
 └─────────────────────────────────────────────────┘
 ```
 **Points to:** Center of editor area
-**What happens on click:** Advances to Step 2
-**Color** First card is yellow: #ffe100  Text is black: #000000
-Slow pulse of the card to draw attention to it.
-**Type** Clickable card - manual advance
+**Style:** Yellow card (#f5ce42), black text, slow pulse animation
+**Type:** Clickable — manual advance to Step 2
 
 ---
 
@@ -99,20 +102,31 @@ Slow pulse of the card to draw attention to it.
 ```
 ┌─────────────────────────────────────────────────┐
 │                                                   │
-│  When you need a hand, just talk to your AI buddy. It's never about replacing   │
-│  you brainstorm and iterate — it's helping you skip a draft or two.      │
+│  When you need a hand, just talk to your AI       │
+│  buddy. It's never about replacing you — it's     │
+│  helping you brainstorm and iterate, skip a       │
+│  draft or two.                                    │
 │                                                   │
 │                            [ Rewrite → ]          │
 └─────────────────────────────────────────────────┘
 ```
 **Points to:** Chat input area
-**What happens on click:** Typing animation plays in chat ("Tighten this up and make it flow better. Give it more power and punch. Keep my voice."), then text morph begins
-**Type** Auto-advance
-
+**Type:** Clickable — triggers Act 1 (typing animation plays in chat input: "Tighten this up and make it flow better. Give it more power and punch. Keep my voice.")
 
 ---
 
-### Step 3 — WATCH MORPH
+### Step 3 — TYPING IN PROGRESS (hidden step)
+```
+No tooltip shown. Chat input has pulsing glow.
+Typing animation plays in the input box.
+When typing completes, message "sends" as blue bubble.
+```
+**Points to:** Chat input area
+**Type:** Auto-advance — advances when chat typing completes
+
+---
+
+### Step 4 — WATCH MORPH
 ```
 ┌─────────────────────────────────────────────────┐
 │                                                   │
@@ -121,42 +135,24 @@ Slow pulse of the card to draw attention to it.
 │                                                   │
 └─────────────────────────────────────────────────┘
 ```
-**Points to:** Document paragraph text
-**What happens:** Auto-advances when morph animation completes. No button — just watch.
-**Type** Auto-advance
+**Points to:** Editor paragraph text
+**Type:** Auto-advance — advances when morph animation completes
 
 ---
 
-### Step 4 — REWRITE DONE
+### Step 5 — REWRITE DONE
 ```
 ┌─────────────────────────────────────────────────┐
 │                                                   │
 │  Rough notes → polished prose. No copy-pasting    │
-│  between apps. No switching tabs.  Accept or reject one by one or all at once.               │
+│  between apps. No switching tabs. Accept or       │
+│  reject one by one or all at once.                │
 │                                                   │
 │                  [ Next: Proofreading → ]          │
 └─────────────────────────────────────────────────┘
 ```
-**Points to:** Document paragraph text (with red/green diffs visible)
-We also see the accept/reject toolbar at the bottom.
-**What happens on click:** Diffs resolve, proofreading bar disappears, advances to Step 5
-**What happens on click:** Advances to Step 5
-**Type** Clickable card - manual advance
-
----
-
-### Step 5 — PROOFREAD
-```
-┌─────────────────────────────────────────────────┐
-│                                                   │
-│How about proofreading? Inkstone goes way beyond a spelling and grammer checker.  Fixes missing words, corrects major errors, reformats, fixes spacing, and also catches all those basic spelling and grammer errors too.           │
-│                                                   │
-│                          [ Proofread → ]          │
-└─────────────────────────────────────────────────┘
-```
-**Points to:** Proofread icon (👓) in toolbar
-**What happens on click:** Button is "clicked" and proofreading scoll out appears in the AI toolbar and autoplays and advanced to the next step
-**Type** Auto-advance
+**Points to:** Proofreading bar (proofbar)
+**Type:** Clickable — triggers Act 2 (proofreading starts automatically)
 
 ---
 
@@ -164,13 +160,12 @@ We also see the accept/reject toolbar at the bottom.
 ```
 ┌─────────────────────────────────────────────────┐
 │                                                   │
-│  Your AI buddy is scanning your document...         │
+│  Proofreading your document...                    │
 │                                                   │
 └─────────────────────────────────────────────────┘
 ```
-**Points to:** AI output of tool in the AI toolbar "vanquishing typos...fixing spacing...correcting grammar..."
-**What happens:** Auto-advances when diffs appear. No button.
-**Type** Auto-advance
+**Points to:** Editor paragraph text
+**Type:** Auto-advance — advances when diffs appear
 
 ---
 
@@ -178,15 +173,14 @@ We also see the accept/reject toolbar at the bottom.
 ```
 ┌─────────────────────────────────────────────────┐
 │                                                   │
-│  Not just spell-check. It caught a missing word   │
-│  too. Red = delete. Green = insert.               │
+│  Caught a typo and a missing word. Not just       │
+│  spell-check — it fills in what's missing too.    │
 │                                                   │
 │                        [ Accept All → ]           │
 └─────────────────────────────────────────────────┘
 ```
-**Points to:** Document paragraph text (with red/green diffs visible)
-**What happens on click:** Diffs resolve, proofreading bar disappears, advances to Step 9 - accept all butto is "clicked"
-**Type** Clickable card - manual advance
+**Points to:** Editor paragraph text (red/green diffs visible)
+**Type:** Clickable — triggers Accept All, diffs resolve, proofreading bar disappears
 
 ---
 
@@ -194,17 +188,15 @@ We also see the accept/reject toolbar at the bottom.
 ```
 ┌─────────────────────────────────────────────────┐
 │                                                   │
-│  Need to look something up? No more opening       │
-│  20 tabs. Do GPT Deep Research or Perplexity like Web search, right in the app.
-
-Just ask.                               │
+│  Need to look something up? No more opening 20   │
+│  tabs. Do GPT Deep Research or Perplexity-like    │
+│  Web Search, right in the app. Just ask.          │
 │                                                   │
 │                           [ Search → ]            │
 └─────────────────────────────────────────────────┘
 ```
 **Points to:** Chat input area
-**What happens on click:** Typing animation plays ("What is Jevon's Paradox and who first described it?"), then search begins
-**Type** Clickable card - manual advance
+**Type:** Clickable — triggers Act 3 (typing animation: "What is Jevons Paradox and who first described it?")
 
 ---
 
@@ -218,7 +210,7 @@ Just ask.                               │
 └─────────────────────────────────────────────────┘
 ```
 **Points to:** Chat messages area
-**What happens:** Auto-advances when research response appears. No button.
+**Type:** Auto-advance — advances when research response appears
 
 ---
 
@@ -232,9 +224,8 @@ Just ask.                               │
 │                      [ Insert to Doc → ]          │
 └─────────────────────────────────────────────────┘
 ```
-**Points to:** Chat insert button / research card
-**What happens on click:** Research content flows into the document
-**Type** Auto-advance
+**Points to:** Chat insert button
+**Type:** Clickable — triggers Insert to Doc, research content flows into the document
 
 ---
 
@@ -246,27 +237,33 @@ Just ask.                               │
 │  lives in your project. Nothing gets lost.        │
 │  No more juggling.                                │
 │                                                   │
+│                      [ One more thing → ]         │
 └─────────────────────────────────────────────────┘
 ```
-**Points to:** Sidebar (which animates open)
-**What happens:** Sidebar opens showing project tree. Auto-advances or click to continue.
-**Type** Clickable card - manual advance
+**Points to:** Sidebar (animates open showing project tree)
+**Type:** Clickable — sidebar opens, then manual advance to finale
 
 ---
 
-### Step 12 — FINALE
+### Step 12 — FINALE (yellow card, pulsing)
 ```
 ┌─────────────────────────────────────────────────┐
 │                                                   │
-│  Think. Brainstorm. Write. Research.              │
-│  Edit. Iterate.                                   │
-│  One app. One place. You're the boss.             │
+│  Write. Rewrite. Proofread. Research.             │
+│  Fact-check.                                      │
 │                                                   │
-│  [ Try for FREE → ]         [ Replay tour ]       │
+│  All in one place. No more 20 tabs and            │
+│  5 subscriptions.                                 │
+│                                                   │
+│  You're the boss. Your AI team handles the rest.  │
+│                                                   │
+│  [ Try Inkstone for FREE → ]    [ Replay tour ]   │
 └─────────────────────────────────────────────────┘
 ```
 **Points to:** Center of screen
-**What happens:** "Try for FREE" links to sign-up. "Replay tour" restarts from Step 1.
+**Style:** Yellow card (#f5ce42), black text, slow pulse animation
+**CTA:** "Try Inkstone for FREE →" links to https://accounts.inkstone.pro/sign-up
+**Replay:** "Replay tour" restarts from Step 1
 
 ---
 
@@ -277,12 +274,14 @@ Just ask.                               │
 | Chat typing speed | 50ms/char | Act 1 prompt |
 | Thinking delay | 800ms | Shimmer before morph |
 | Morph duration | 2500ms | Text morph animation |
-| Scanning delay | 1200ms | "Scanning for errors..." |
+| Scanning delay | 1200ms | "Proofreading your document..." |
 | Diff stagger | 400ms | Between each diff appearing |
 | Accept All delay | 1500ms | Before auto-accept (auto mode only) |
 | Resolve animation | 600ms | Diffs fading out |
 | Research typing speed | 45ms/char | Act 3 prompt |
 | Loading shimmer | 1800ms | Research loading skeleton |
+| Response typing speed | 20ms/char | Research response appearing |
 | Insert to Doc delay | 1200ms | Before auto-insert (auto mode only) |
 | Insert animation | 800ms | Content flowing into doc |
 | Inter-act delay | 1000ms | Pause between acts (auto mode) |
+| Estimated total | ~35s | Full guided tour |

@@ -31,18 +31,34 @@ export type WalkthroughState =
 
 type Mode = "guided" | "auto";
 
+/** State snapshot exposed to external consumers (e.g. mobile camera) */
+export interface WalkthroughSnapshot {
+  state: WalkthroughState;
+  chatTypingDone: boolean;
+  diffsVisible: boolean;
+  sidebarOpen: boolean;
+  tourStep: number;
+}
+
 interface WalkthroughProps {
   theme: Theme;
   onToggleTheme: () => void;
+  /** Override the mode (instead of reading from URL param) */
+  modeOverride?: Mode;
+  /** Force the desktop layout even on narrow viewports (for mobile camera) */
+  forceDesktopLayout?: boolean;
+  /** Called whenever internal state changes — used by mobile camera */
+  onSnapshot?: (snapshot: WalkthroughSnapshot) => void;
 }
 
-function getMode(): Mode {
+function getMode(override?: Mode): Mode {
+  if (override) return override;
   const params = new URLSearchParams(window.location.search);
   return params.get("mode") === "auto" ? "auto" : "guided";
 }
 
-export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
-  const mode = getMode();
+export function Walkthrough({ theme, onToggleTheme, modeOverride, forceDesktopLayout, onSnapshot }: WalkthroughProps) {
+  const mode = getMode(modeOverride);
   const [state, setState] = useState<WalkthroughState>("idle");
   const [chatTypingDone, setChatTypingDone] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -215,6 +231,17 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
     }
   }, [state]);
 
+  // --- SNAPSHOT: expose state to external consumers (mobile camera) ---
+  useEffect(() => {
+    onSnapshot?.({
+      state,
+      chatTypingDone,
+      diffsVisible,
+      sidebarOpen,
+      tourStep,
+    });
+  }, [state, chatTypingDone, diffsVisible, sidebarOpen, tourStep, onSnapshot]);
+
   const handleReplay = useCallback(() => {
     setChatTypingDone(false);
     setSidebarOpen(false);
@@ -251,7 +278,7 @@ export function Walkthrough({ theme, onToggleTheme }: WalkthroughProps) {
   }, [tourStep, advanceTour, handleAcceptAll]);
 
   return (
-    <div className="walkthrough" data-theme={theme}>
+    <div className={`walkthrough${forceDesktopLayout ? " walkthrough--desktop-forced" : ""}`} data-theme={theme}>
       <StepIndicator
         currentAct={currentAct}
         completedActs={getCompletedActs(state)}
