@@ -182,17 +182,6 @@
   50% { box-shadow: 0 8px 32px rgba(200, 170, 0, 0.3), 0 0 0 8px rgba(200, 170, 0, 0); }
 }
 
-/* Light mode CTA stays gold */
-[data-theme="light"] .mobile-camera__caption-card--cta {
-  background: #f5ce42;
-  border-color: #d4ad20;
-  border-left-color: #c49b10;
-}
-
-[data-theme="light"] .mobile-camera__caption-card--cta .mobile-camera__caption-link {
-  color: #1a1500;
-}
-
 /* --- Light mode: invert to dark card (same as desktop light tooltips) --- */
 [data-theme="light"] .mobile-camera__caption-card {
   background: #1a1a2e;
@@ -209,4 +198,20 @@
 
 [data-theme="light"] .mobile-camera__caption-link {
   color: #f0c000;
+}
+
+/* Light mode CTA stays gold — MUST come after base light mode rules */
+[data-theme="light"] .mobile-camera__caption-card.mobile-camera__caption-card--cta {
+  background: #f5ce42;
+  border: 1px solid #d4ad20;
+  border-left: 4px solid #c49b10;
+}
+
+[data-theme="light"] .mobile-camera__caption-card--cta .mobile-camera__caption-link {
+  color: #1a1500;
+}
+
+[data-theme="light"] .mobile-camera__caption-card--cta .mobile-camera__replay-btn {
+  color: #5a4d00;
+  border-color: #c49b10;
 }
