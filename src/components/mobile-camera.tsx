@@ -20,8 +20,8 @@ interface MobileCameraProps {
   onToggleTheme: () => void;
 }
 
-/** Height reserved for the caption bar at the bottom */
-const CAPTION_BAR_HEIGHT = 48;
+/** Approximate height of caption card (for initial viewport size estimate) */
+const CAPTION_CARD_HEIGHT = 80;
 
 /**
  * Map a walkthrough state snapshot → shot index (0-based).
@@ -76,7 +76,7 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
   const [shotIndex, setShotIndex] = useState(0);
   const [caption, setCaption] = useState(MOBILE_SHOTS[0].caption);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const [viewportSize, setViewportSize] = useState({ w: 375, h: 667 - CAPTION_BAR_HEIGHT });
+  const [viewportSize, setViewportSize] = useState({ w: 375, h: 667 - CAPTION_CARD_HEIGHT });
 
   // Measure the actual viewport size
   useEffect(() => {
@@ -149,8 +149,8 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
         </div>
       </div>
 
-      {/* Caption bar — overlaid at bottom, NOT transformed */}
-      <div className="mobile-camera__caption-bar">
+      {/* Caption card — frosted glass, overlaid at bottom, NOT transformed */}
+      <div className="mobile-camera__caption-card">
         <p className="mobile-camera__caption-text" key={shot.id}>
           {caption}
         </p>

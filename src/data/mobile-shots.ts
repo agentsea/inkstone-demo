@@ -43,19 +43,19 @@ export const MOBILE_SHOTS: CameraShot[] = [
   // Shot 2 — ZOOM TO CHAT INPUT (typing)
   {
     id: "chat-input-typing",
-    scale: 1.4,
-    originX: 1010,
-    originY: 750,
-    caption: "Just talk to your AI buddy.",
+    scale: 1.15,
+    originX: 990,
+    originY: 740,
+    caption: "When you need a hand, just talk to your AI buddy.",
     transitionMs: 800,
     easing: "cubic-bezier(0.16, 1, 0.3, 1)", // ease-out expo
   },
   // Shot 3 — PAN UP: MESSAGE SENT
   {
     id: "message-sent",
-    scale: 1.2,
-    originX: 1010,
-    originY: 500,
+    scale: 1.1,
+    originX: 990,
+    originY: 480,
     caption: "Watch what happens next\u2026",
     transitionMs: 600,
     easing: "cubic-bezier(0.33, 1, 0.68, 1)", // ease-out cubic
