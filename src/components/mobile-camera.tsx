@@ -226,7 +226,7 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
       )}
 
       {/* Caption card — overlaid at bottom, NOT transformed */}
-      <div className="mobile-camera__caption-card">
+      <div className={`mobile-camera__caption-card${shot.captionLink ? " mobile-camera__caption-card--cta" : ""}`}>
         {shot.captionLink ? (
           <a
             className="mobile-camera__caption-link"

@@ -129,6 +129,40 @@
   }
 }
 
+/* --- Golden CTA card (finale) — matches desktop yellow tooltip --- */
+.mobile-camera__caption-card--cta {
+  background: #f5ce42;
+  border: 1px solid #d4ad20;
+  border-left: 4px solid #c49b10;
+  box-shadow:
+    0 8px 32px rgba(200, 170, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.15);
+  animation: pulse-gold-card 2.5s ease-in-out infinite;
+}
+
+.mobile-camera__caption-card--cta .mobile-camera__caption-link {
+  color: #1a1500;
+  font-size: 17px;
+  font-weight: 700;
+  text-shadow: none;
+}
+
+@keyframes pulse-gold-card {
+  0%, 100% { box-shadow: 0 8px 32px rgba(200, 170, 0, 0.2), 0 0 0 0 rgba(200, 170, 0, 0.3); }
+  50% { box-shadow: 0 8px 32px rgba(200, 170, 0, 0.3), 0 0 0 8px rgba(200, 170, 0, 0); }
+}
+
+/* Light mode CTA stays gold */
+[data-theme="light"] .mobile-camera__caption-card--cta {
+  background: #f5ce42;
+  border-color: #d4ad20;
+  border-left-color: #c49b10;
+}
+
+[data-theme="light"] .mobile-camera__caption-card--cta .mobile-camera__caption-link {
+  color: #1a1500;
+}
+
 /* --- Light mode: invert to dark card (same as desktop light tooltips) --- */
 [data-theme="light"] .mobile-camera__caption-card {
   background: #1a1a2e;
