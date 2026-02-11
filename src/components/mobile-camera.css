@@ -10,11 +10,12 @@
   background: var(--bg-primary);
 }
 
-/* The clipping viewport — same size as the mobile iframe */
+/* The clipping viewport — fills available space above the caption bar */
 .mobile-camera__viewport {
   position: relative;
   width: 100%;
-  height: 100%;
+  /* Leave room for caption bar (48px) */
+  height: calc(100% - 48px);
   overflow: hidden;
 }
 

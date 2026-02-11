@@ -20,32 +20,79 @@ interface MobileCameraProps {
   onToggleTheme: () => void;
 }
 
+/** Height reserved for the caption bar at the bottom */
+const CAPTION_BAR_HEIGHT = 48;
+
 /**
  * Map a walkthrough state snapshot → shot index (0-based).
  * Returns the shot that should be active for the given state.
  */
 function snapshotToShotIndex(snap: WalkthroughSnapshot): number {
-  const { state, chatTypingDone, diffsVisible } = snap;
+  const { state, chatTypingDone } = snap;
 
-  // Shot 6: Act 2 running, diffs visible
-  if ((state === "act2" || state === "act2-complete") && diffsVisible) return 5;
-  // Shot 6: Act 2 running, diffs not yet
-  if (state === "act2") return 5;
+  // Shot 6: Act 2 running or complete
+  if (state === "act2" || state === "act2-complete") return 5;
   // Shot 5: Act 1 complete (rewrite diffs visible)
   if (state === "act1-complete") return 4;
   // Shot 4: Act 1 running, typing done → morph playing
   if (state === "act1" && chatTypingDone) return 3;
-  // Shot 3: This is a brief transition — we'll merge it into shot 2→4
   // Shot 2: Act 1 running, typing in progress
   if (state === "act1" && !chatTypingDone) return 1;
   // Shot 1: Idle
   return 0;
 }
 
+/**
+ * Compute CSS transform to center (originX, originY) in the viewport at the given scale.
+ *
+ * The math:
+ * 1. Scale the canvas by `scale` from top-left (transform-origin: 0 0)
+ * 2. Translate so that the focus point (originX, originY) lands at the viewport center
+ *
+ * translateX = viewportWidth/2 - originX * scale
+ * translateY = viewportHeight/2 - originY * scale
+ */
+function computeTransform(
+  shot: CameraShot,
+  viewportW: number,
+  viewportH: number,
+): React.CSSProperties {
+  const tx = viewportW / 2 - shot.originX * shot.scale;
+  const ty = viewportH / 2 - shot.originY * shot.scale;
+
+  return {
+    width: CANVAS.width,
+    height: CANVAS.height,
+    transformOrigin: "0 0",
+    transform: `translate(${tx}px, ${ty}px) scale(${shot.scale})`,
+    transition:
+      shot.transitionMs > 0
+        ? `transform ${shot.transitionMs}ms ${shot.easing}`
+        : "none",
+  };
+}
+
 export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps) {
   const [shotIndex, setShotIndex] = useState(0);
   const [caption, setCaption] = useState(MOBILE_SHOTS[0].caption);
   const viewportRef = useRef<HTMLDivElement>(null);
+  const [viewportSize, setViewportSize] = useState({ w: 375, h: 667 - CAPTION_BAR_HEIGHT });
+
+  // Measure the actual viewport size
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setViewportSize({
+          w: entry.contentRect.width,
+          h: entry.contentRect.height,
+        });
+      }
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   // Track the walkthrough auto-start delay — show wide shot first
   const [started, setStarted] = useState(false);
@@ -71,20 +118,7 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
   );
 
   const shot: CameraShot = MOBILE_SHOTS[shotIndex];
-
-  // For the "message sent" beat (shot 3 in the doc), we transition through
-  // an intermediate position. For now, shots 2→4 is a direct pan.
-  // We can add shot 3 as a refinement later.
-
-  const canvasStyle: React.CSSProperties = {
-    width: CANVAS.width,
-    height: CANVAS.height,
-    transformOrigin: `${shot.originX}px ${shot.originY}px`,
-    transform: `scale(${shot.scale})`,
-    transition: shot.transitionMs > 0
-      ? `transform ${shot.transitionMs}ms ${shot.easing}, transform-origin ${shot.transitionMs}ms ${shot.easing}`
-      : "none",
-  };
+  const canvasStyle = computeTransform(shot, viewportSize.w, viewportSize.h);
 
   return (
     <div className="mobile-camera" data-theme={theme}>
