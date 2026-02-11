@@ -118,7 +118,7 @@ export const TOUR_STEPS = [
   {
     id: "intro",
     target: "editor-area",
-    text: "Inkstone is a co-creative writing app where you\u2019re in charge.\n\nYou write. Your AI buddy handles the research, editing, fact-checking, and proofreading.\n\nClick me to see how it works!",
+    text: "Inkstone is a co-creative writing app where you\u2019re in charge.\n\nYou write. Your AI buddy handles the research, editing, fact-checking, and proofreading.\n\nClick Start to see how it works!",
     cta: "Start \u2192",
     position: "center" as const,
     style: "yellow" as const, // special yellow card
