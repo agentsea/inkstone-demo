@@ -120,17 +120,27 @@ export const MOBILE_SHOTS: CameraShot[] = [
     transitionMs: 600,
     easing: "cubic-bezier(0.33, 1, 0.68, 1)",
   },
-  // Shot 10 — ZOOM OUT: SIDEBAR REVEAL (the big pull-back)
+  // Shot 10 — ZOOM TO SIDEBAR: project tree visible
   {
     id: "sidebar-reveal",
-    scale: 0.45,
-    originX: 500,
+    scale: 1.3,
+    originX: 130,
     originY: 400,
-    caption: "Everything lives in one project.",
-    transitionMs: 1000,
-    easing: "cubic-bezier(0.16, 1, 0.3, 1)", // slow dramatic ease-out
+    caption: "Drafts, research, searches \u2014 organized in one project. Nothing gets lost.",
+    transitionMs: 800,
+    easing: "cubic-bezier(0.16, 1, 0.3, 1)",
   },
-  // Shot 11 — FULL WIDE: FINALE
+  // Shot 11 — PULL BACK: full app with sidebar open (the money shot)
+  {
+    id: "full-reveal",
+    scale: 0.38,
+    originX: 550,
+    originY: 400,
+    caption: "One app. Everything you need to write.",
+    transitionMs: 1000,
+    easing: "cubic-bezier(0.16, 1, 0.3, 1)", // slow dramatic pull-back
+  },
+  // Shot 12 — FULL WIDE: FINALE
   {
     id: "finale",
     scale: 0.31,

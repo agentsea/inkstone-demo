@@ -32,16 +32,16 @@ const CAPTION_CARD_HEIGHT = 80;
  *  0 = wide open          6 = research typing
  *  1 = chat input typing  7 = research response
  *  2 = message sent        8 = insert to doc
- *  3 = text morph           9 = sidebar reveal
- *  4 = rewrite diffs       10 = finale
- *  5 = proofread diffs
+ *  3 = text morph           9 = sidebar zoom
+ *  4 = rewrite diffs       10 = full reveal (pull-back)
+ *  5 = proofread diffs     11 = finale
  */
 function snapshotToShotIndex(snap: WalkthroughSnapshot): number {
   const { state, chatTypingDone, sidebarOpen, researchPhase } = snap;
 
-  // --- Act 3 complete → finale (shot 11)
-  if (state === "act3-complete") return 10;
-  // --- Sidebar opened → sidebar reveal (shot 10)
+  // --- Act 3 complete + sidebar open → finale (shot 12)
+  if (state === "act3-complete" && sidebarOpen) return 11;
+  // --- Sidebar opened → sidebar zoom (shot 10) — timed advance to 11 handled separately
   if (sidebarOpen) return 9;
   // --- Research: inserted → insert to doc (shot 9)
   if (researchPhase === "inserted" || researchPhase === "inserting") return 8;
@@ -138,6 +138,26 @@ export function MobileCameraWrapper({ theme, onToggleTheme }: MobileCameraProps)
     },
     [holdingWide, shotIndex],
   );
+
+  // --- Timed advance for sidebar reveal sequence (shots 9 → 10 → 11) ---
+  useEffect(() => {
+    // When we land on the sidebar zoom shot, auto-advance to pull-back after 3s
+    if (shotIndex === 9) {
+      const t = setTimeout(() => {
+        setShotIndex(10);
+        setCaption(MOBILE_SHOTS[10].caption);
+      }, 3000);
+      return () => clearTimeout(t);
+    }
+    // When we land on the pull-back shot, auto-advance to finale after 3s
+    if (shotIndex === 10) {
+      const t = setTimeout(() => {
+        setShotIndex(11);
+        setCaption(MOBILE_SHOTS[11].caption);
+      }, 3000);
+      return () => clearTimeout(t);
+    }
+  }, [shotIndex]);
 
   // Cleanup hold timer
   useEffect(() => {
